@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">eTicket</string>
-    <string name="sloganText">Blablablaasdasdasdasdasdasdasdasdasdasdasdasdasd</string>
+    <string name="Slogan">Easiest way to book a ticket! Find all available routes and destinations.</string>
     <string name="logoText">e-Ticket</string>
 </resources>

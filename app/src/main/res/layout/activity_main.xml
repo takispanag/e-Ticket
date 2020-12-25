@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -17,11 +17,21 @@
             android:id="@+id/txtLogo"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
             android:fontFamily="@font/abril_fatface"
             android:gravity="center"
             android:text="@string/logoText"
             android:textColor="@android:color/white"
             android:textSize="36sp" />
+
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/txtSlogan"
+            android:text ="@string/Slogan"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <LinearLayout
@@ -32,7 +42,7 @@
         android:layout_height="wrap_content">
 
         <info.hoang8f.widget.FButton
-            android:id="@+id/btnSignup"
+            android:id="@+id/btnSignUp"
             android:text="Sign Up"
             android:textColor="@android:color/white"
             android:layout_weight="1"
