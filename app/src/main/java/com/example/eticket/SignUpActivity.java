@@ -24,7 +24,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     private EditText nameTextView,emailTextView, passwordTextView,comfpasswordTextView;
     private Button Btn;
-    private ProgressBar progressbar;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,9 +37,8 @@ public class SignUpActivity extends AppCompatActivity {
         nameTextView = findViewById(R.id.name);
         emailTextView = findViewById(R.id.email);
         passwordTextView = findViewById(R.id.password);
-        comfpasswordTextView = findViewById(R.id.comfPassword);
+        comfpasswordTextView = findViewById(R.id.confPassword);
         Btn = findViewById(R.id.SignUp);
-        progressbar = findViewById(R.id.progressBar);
 
         // Set on Click Listener on Sign-un button
         Btn.setOnClickListener(new View.OnClickListener() {

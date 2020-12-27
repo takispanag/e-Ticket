@@ -20,41 +20,50 @@
         android:layout_width="match_parent"
         android:layout_height="152dp"
         android:layout_marginTop="-100dp"
+        android:contentDescription="@string/ticketImage"
         android:rotation="15"
         app:srcCompat="@drawable/ticket" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login" />
+        android:layout_gravity="center"
+        android:text="@string/credentials"
+        android:textSize="18sp" />
 
     <!-- Edit text for email -->
     <EditText
         android:id="@+id/email"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:hint="Enter your Email"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:hint="@string/emailText"
+        android:importantForAutofill="no"
         android:inputType="textEmailAddress" />
 
     <!-- Edit text for password -->
     <EditText
         android:id="@+id/password"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:hint="Enter your Password"
+        android:layout_gravity="center"
+        android:hint="@string/passwordText"
+        android:importantForAutofill="no"
         android:inputType="textPassword" />
 
     <!-- Button for Login with text "Login" -->
 
     <info.hoang8f.widget.FButton
         android:id="@+id/login"
-        android:layout_width="match_parent"
+        android:layout_width="125dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_margin="8dp"
         android:shadowColor="@android:color/black"
-        android:text="Login"
+        android:text="@string/login"
         android:textColor="@android:color/white"
-        app:cornerRadius="4dp"
+        app:cornerRadius="20dp"
         app:fButtonColor="@color/btnSignActive"
         app:shadowEnabled="true"
         app:shadowHeight="5dp" />

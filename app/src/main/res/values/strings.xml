@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">eTicket</string>
-    <string name="Slogan">Easiest way to book a ticket! Find all available routes and destinations.</string>
+    <string name="slogan">Easiest way to book a ticket! Find all available routes and destinations.</string>
     <string name="logoText">e-Ticket</string>
+    <string name="registerImage">Register Image</string>
+    <string name="signUp">Sign Up</string>
+    <string name="signIn">Sign In</string>
+    <string name="nameText">Enter your Name</string>
+    <string name="emailText">Enter your Email</string>
+    <string name="passwordText">Enter your Password</string>
+    <string name="confirmPasswordText">Confirm Password</string>
+    <string name="ticketImage">Ticket Image</string>
+    <string name="login">Login</string>
+    <string name="credentials">Enter your Credentials</string>
 </resources>
