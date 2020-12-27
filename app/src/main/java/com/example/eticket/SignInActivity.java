@@ -6,11 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,10 +18,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-public class Signin extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity {
+
     private EditText emailTextView, passwordTextView;
     private Button Btn;
-    private ProgressBar progressbar;
 
     private FirebaseAuth mAuth;
     @Override
@@ -36,7 +36,6 @@ public class Signin extends AppCompatActivity {
         emailTextView = findViewById(R.id.email);
         passwordTextView = findViewById(R.id.password);
         Btn = findViewById(R.id.login);
-        progressbar = findViewById(R.id.progressBar);
 
         // Set on Click Listener on Sign-in button
         Btn.setOnClickListener(new View.OnClickListener() {
@@ -50,9 +49,6 @@ public class Signin extends AppCompatActivity {
 
     private void loginUserAccount()
     {
-
-        // show the visibility of progress bar to show loading
-        progressbar.setVisibility(View.VISIBLE);
 
         // Take the value of two edit texts in Strings
         String email, password;
@@ -86,17 +82,14 @@ public class Signin extends AppCompatActivity {
                             {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(getApplicationContext(),
-                                            "Login successful!!",
+                                            "Login successful!",
                                             Toast.LENGTH_LONG)
                                             .show();
-
-                                    // hide the progress bar
-                                    progressbar.setVisibility(View.GONE);
 
                                     // if sign-in is successful
                                     // intent to home activity
                                     Intent intent
-                                            = new Intent(Signin.this,
+                                            = new Intent(SignInActivity.this,
                                             MainActivity.class);
                                     startActivity(intent);
                                 }
@@ -105,12 +98,9 @@ public class Signin extends AppCompatActivity {
 
                                     // sign-in failed
                                     Toast.makeText(getApplicationContext(),
-                                            "Login failed!!",
+                                            "Login failed!",
                                             Toast.LENGTH_LONG)
                                             .show();
-
-                                    // hide the progress bar
-                                    progressbar.setVisibility(View.GONE);
                                 }
                             }
                         });

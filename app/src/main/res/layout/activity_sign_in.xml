@@ -1,30 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Linear Layout with vertical orientation and other properties -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#6AD6F5"
     android:gravity="center_vertical"
     android:orientation="vertical"
     android:padding="15dp"
-    tools:context=".Signin">
+    tools:context=".SignInActivity">
 
     <!-- TextView for heading -->
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="152dp"
+        android:layout_marginTop="-100dp"
+        android:rotation="15"
+        app:srcCompat="@drawable/ticket" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"/>
+        android:text="Login" />
 
     <!-- Edit text for email -->
     <EditText
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter your Email" />
+        android:hint="Enter your Email"
+        android:inputType="textEmailAddress" />
 
     <!-- Edit text for password -->
     <EditText
@@ -35,16 +45,18 @@
         android:inputType="textPassword" />
 
     <!-- Button for Login with text "Login" -->
-    <Button
+
+    <info.hoang8f.widget.FButton
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login" />
+        android:layout_margin="8dp"
+        android:shadowColor="@android:color/black"
+        android:text="Login"
+        android:textColor="@android:color/white"
+        app:cornerRadius="4dp"
+        app:fButtonColor="@color/btnSignActive"
+        app:shadowEnabled="true"
+        app:shadowHeight="5dp" />
 
-    <!-- ProgressBar for Loading Time -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-</LinearLayout> 
+</LinearLayout>
