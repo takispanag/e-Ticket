@@ -38,7 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
         emailTextView = findViewById(R.id.email);
         passwordTextView = findViewById(R.id.password);
         comfpasswordTextView = findViewById(R.id.confPassword);
-        Btn = findViewById(R.id.SignUp);
+        Btn = findViewById(R.id.signUp);
 
         // Set on Click Listener on Sign-un button
         Btn.setOnClickListener(new View.OnClickListener() {
