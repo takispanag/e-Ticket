@@ -1,15 +1,18 @@
 package com.example.eticket.Model;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+
 public class User {
     private String Name;
-    private String Password;
-
+    private String Email;
     public User(){
     }
 
-    public User(String name, String password){
+    public User(String name, String email) {
         Name = name;
-        Password = password;
+        Email = email;
     }
 
     public String getName() {
@@ -20,11 +23,12 @@ public class User {
         Name = name;
     }
 
-    public String getPassword() {
-        return Password;
+    public String getEmail() {
+        return Email;
     }
 
-    public void setPassword(String password) {
-        Password = password;
+    public void setEmail(String email) {
+        Email = email;
     }
+
 }
