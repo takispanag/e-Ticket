@@ -77,9 +77,8 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            //new User(nameTextView.getText().toString(),emailTextView.getText().toString())
-                            DatabaseReference userEmail = rootRef.child("Email");
-                            userEmail.setValue("test@hot.gr");
+                            User user = new User(nameTextView.getText().toString(),emailTextView.getText().toString());
+                            usersRef.child(mAuth.getUid()).setValue(user);
 
                             startActivity(new Intent(getBaseContext(), SignInActivity.class));
                         } else {
