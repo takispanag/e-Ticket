@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="btnSignUp">#39796b</color>
     <color name="btnSignActive">#A9d440</color>
+    <color name="available">#00ff22</color>
 </resources>

@@ -22,17 +22,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 public class SignUpActivity extends AppCompatActivity {
 
     private EditText nameTextView,emailTextView, passwordTextView,confpasswordTextView;
     private Button Btn;
     private FirebaseAuth mAuth;
-    DatabaseReference rootRef =  FirebaseDatabase.getInstance().getReference();
-    DatabaseReference usersRef =  rootRef.child("Users");
+    CollectionReference db = FirebaseFirestore.getInstance().collection("UserInfo");
 
 
     @Override
@@ -76,11 +79,13 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            Executors.newSingleThreadExecutor().execute(()->{
+                                User user = new User(nameTextView.getText().toString(),emailTextView.getText().toString());
+                                db.document(mAuth.getUid()).set(user);
+                            });
                             // Sign in success, update UI with the signed-in user's information
-                            User user = new User(nameTextView.getText().toString(),emailTextView.getText().toString());
-                            usersRef.child(mAuth.getUid()).setValue(user);
 
-                            startActivity(new Intent(getBaseContext(), SignInActivity.class));
+                            startActivity(new Intent(getBaseContext(), RouteActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("signup", "createUserWithEmail:failure", task.getException());

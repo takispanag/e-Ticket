@@ -41,6 +41,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button" />
+
         <info.hoang8f.widget.FButton
             android:id="@+id/btnSignUp"
             android:layout_width="0dp"
@@ -71,9 +77,9 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="Button2" />
 
 </RelativeLayout>

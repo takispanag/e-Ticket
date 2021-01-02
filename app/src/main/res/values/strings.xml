@@ -12,4 +12,6 @@
     <string name="ticketImage">Ticket Image</string>
     <string name="login">Login</string>
     <string name="credentials">Enter your Credentials</string>
+    <string name="search">ΑΝΑΖΗΤΗΣΗ</string>
+    <string name="driver">Driver</string>
 </resources>

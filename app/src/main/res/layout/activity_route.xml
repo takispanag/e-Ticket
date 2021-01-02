@@ -9,10 +9,12 @@
     tools:context=".RouteActivity">
 
     <Spinner
+
         android:id="@+id/spinner1"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="70dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown" />
 
@@ -37,4 +39,18 @@
         android:layout_gravity="center"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown" />
+
+    <info.hoang8f.widget.FButton
+        android:id="@+id/search"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:shadowColor="@android:color/black"
+        android:text="@string/search"
+        android:textColor="@android:color/white"
+        app:cornerRadius="20dp"
+        app:fButtonColor="@color/btnSignActive"
+        app:shadowEnabled="true"
+        app:shadowHeight="5dp" />
 </LinearLayout>
