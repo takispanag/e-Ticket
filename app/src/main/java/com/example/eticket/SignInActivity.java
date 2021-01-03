@@ -90,7 +90,7 @@ public class SignInActivity extends AppCompatActivity {
                                     // intent to home activity
                                     Intent intent
                                             = new Intent(SignInActivity.this,
-                                            MainActivity.class);
+                                            RouteActivity.class);
                                     startActivity(intent);
                                 }
 

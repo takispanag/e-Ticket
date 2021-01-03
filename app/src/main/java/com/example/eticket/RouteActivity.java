@@ -93,9 +93,9 @@ public class RouteActivity extends AppCompatActivity {
                         }
                     });
 
-                    Log.d("TAG", list.toString());
+                    Log.d("LogTesting", list.toString());
                 } else {
-                    Log.d("TAG", "Error getting documents: ", task.getException());
+                    Log.d("LogTesting", "Error getting documents: ", task.getException());
                 }
                 search.setOnClickListener(new View.OnClickListener(){
                     @Override
@@ -135,12 +135,12 @@ public class RouteActivity extends AppCompatActivity {
                     if (document.exists()) {
                         List<String> list = (List<String>) document.get("ΩΡΑ");
                         sp3.setAdapter(fillSpinner(list));
-                        Log.d("TAG", "DocumentSnapshot data: " + document.getData());
+                        Log.d("LogTesting", "DocumentSnapshot data: " + document.getData());
                     } else {
-                        Log.d("TAG", "No such document");
+                        Log.d("LogTesting", "No such document");
                     }
                 } else {
-                    Log.d("TAG", "get failed with ", task.getException());
+                    Log.d("LogTesting", "get failed with ", task.getException());
                 }
             }});
     }
@@ -156,12 +156,12 @@ public class RouteActivity extends AppCompatActivity {
                         List<String> list = (List<String>) document.get("Destination");
                         list.add(0, "ΠΡΟΣ");
                         sp.setAdapter(fillSpinner(list));
-                        Log.d("TAG", "DocumentSnapshot data: " + document.getData());
+                        Log.d("LogTesting", "DocumentSnapshot data: " + document.getData());
                     } else {
-                        Log.d("TAG", "No such document");
+                        Log.d("LogTesting", "No such document");
                     }
                 } else {
-                    Log.d("TAG", "get failed with ", task.getException());
+                    Log.d("LogTesting", "get failed with ", task.getException());
                 }
             }});
     }
