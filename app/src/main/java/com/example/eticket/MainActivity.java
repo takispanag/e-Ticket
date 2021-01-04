@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
         btnSignIn = (Button) findViewById(R.id.btnSignIn);
         btnButton = (Button) findViewById(R.id.button);
-        btnButton2 = (Button) findViewById(R.id.button2);
 
         txtSlogan = (TextView) findViewById(R.id.txtSlogan);
         Typeface face = Typeface.createFromAsset(getAssets(),"fonts/NABILA.TTF");
@@ -347,32 +346,21 @@ public class MainActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent signUp = new Intent(MainActivity.this, SignUpActivity.class);
-                startActivity(signUp);
+                startActivity(new Intent(MainActivity.this, SignUpActivity.class));
             }
         });
 
         btnSignIn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent signIn = new Intent(MainActivity.this, SignInActivity.class);
-                startActivity(signIn);
+                startActivity(new Intent(MainActivity.this, SignInActivity.class));
             }
         });
 
         btnButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent signIn = new Intent(MainActivity.this, RouteActivity.class);
-                startActivity(signIn);
-            }
-        });
-
-        btnButton2.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent signIn = new Intent(MainActivity.this, SeatSelectionActivity.class);
-                startActivity(signIn);
+                startActivity(new Intent(MainActivity.this, RouteActivity.class));
             }
         });
 

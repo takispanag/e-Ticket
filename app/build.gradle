@@ -43,4 +43,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.github.jd-alexander:android-flat-button:v1.1'
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
+    implementation 'com.stripe:stripe-android:16.1.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.4.2'
 }

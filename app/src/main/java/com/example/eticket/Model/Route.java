@@ -6,21 +6,21 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Route implements Serializable {
-    private Date date;
+    private String date;
     private String routeKey;
     private String sp3Selection;
 
-    public Route(Date date, String routeKey, String sp3Selection) {
+    public Route(String date, String routeKey, String sp3Selection) {
         this.date = date;
         this.routeKey = routeKey;
         this.sp3Selection = sp3Selection;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -42,6 +42,6 @@ public class Route implements Serializable {
 
     @Override
     public String toString() {
-        return DateFormat.format("dd-MM-yyyy", new Date(date.getTime())).toString() +" "+ routeKey + " " +sp3Selection;
+        return date +" "+ routeKey + " " +sp3Selection;
     }
 }

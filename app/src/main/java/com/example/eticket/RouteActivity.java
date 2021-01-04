@@ -4,11 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.icu.util.BuddhistCalendar;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.text.format.DateFormat;
 
 import com.example.eticket.Model.Route;
 import com.example.eticket.Model.Seat;
@@ -31,6 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,12 +44,16 @@ public class RouteActivity extends AppCompatActivity {
     String sp1Selection;
     String sp2Selection;
     String routeKey;
+    String currentDate;
+    CalendarView myCalendar;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
+        ProgressDialog dialog = ProgressDialog.show(RouteActivity.this, "",
+                "Loading", true);
         Spinner sp1 = findViewById(R.id.spinner1);
         List<String> li = new ArrayList<>();
         li.add("ΑΠΟ");
@@ -57,6 +63,8 @@ public class RouteActivity extends AppCompatActivity {
         Spinner sp2 = findViewById(R.id.spinner2);
         Spinner sp3 = findViewById(R.id.spinner3);
         Button search = findViewById(R.id.search);
+
+        myCalendar = (CalendarView) findViewById(R.id.calendarView);
         db.collection("Origin").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -67,11 +75,15 @@ public class RouteActivity extends AppCompatActivity {
                         list.add(document.getId());
                     }
                     sp1.setAdapter(fillSpinner(list));
+                    dialog.dismiss();
                     sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                            ProgressDialog dialog2 = ProgressDialog.show(RouteActivity.this, "",
+                                    "Loading", true);
                             sp1Selection = sp1.getSelectedItem().toString();
                             updateSecondSpinner(sp1Selection,sp2);
+                            dialog2.dismiss();
                         }
 
                         @Override
@@ -82,9 +94,12 @@ public class RouteActivity extends AppCompatActivity {
                     sp2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                            ProgressDialog dialog3 = ProgressDialog.show(RouteActivity.this, "",
+                                    "Loading", true);
                             sp2Selection = sp2.getSelectedItem().toString();
                             routeKey = sp1Selection+"-"+sp2Selection;
                             getDatabaseHours(routeKey,sp3);
+                            dialog3.dismiss();
                         }
 
                         @Override
@@ -97,13 +112,19 @@ public class RouteActivity extends AppCompatActivity {
                 } else {
                     Log.d("LogTesting", "Error getting documents: ", task.getException());
                 }
+
+
+                getCurDate();
                 search.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view) {
-                        CalendarView myCalendar = (CalendarView) findViewById(R.id.calendarView);
-
+                        if(currentDate == ""){
+                            currentDate = DateFormat.format("dd-MM-yyyy",myCalendar.getDate()).toString();
+                            Log.d("tanasis",currentDate);
+                        }
                         Intent signIn = new Intent(getBaseContext(), SeatSelectionActivity.class);
-                        Route route = new Route(new Date(myCalendar.getDate()),routeKey,sp3.getSelectedItem().toString());
+                        Route route = new Route(currentDate,routeKey,sp3.getSelectedItem().toString());
+
                         signIn.putExtra("route",route);
                         startActivity(signIn);
                     }
@@ -124,6 +145,27 @@ public class RouteActivity extends AppCompatActivity {
 //                test.add(String.valueOf(date));
 //            }
 //        });
+    }
+
+
+    private void getCurDate(){
+        myCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month,
+                                            int dayOfMonth) {
+                String zeroDay = "";
+                String zeroMonth = "";
+                if(dayOfMonth/10<1){
+                    zeroDay = "0";
+                }
+                if(month/10<1){
+                    zeroMonth = "0";
+                }
+                currentDate = zeroDay+String.valueOf(dayOfMonth)+"-"+zeroMonth+String.valueOf(month+1)+"-"+String.valueOf(year);
+
+                Log.d("tanasis",currentDate);
+            }
+        });
     }
 
     private void getDatabaseHours(String routeKey, Spinner sp3){

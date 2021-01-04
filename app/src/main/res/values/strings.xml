@@ -14,4 +14,16 @@
     <string name="credentials">Enter your Credentials</string>
     <string name="search">ΑΝΑΖΗΤΗΣΗ</string>
     <string name="driver">Driver</string>
+    <string name="kleiseThesi">Κλείσε Θέση</string>
+    <string name="ekptwsi">Επιλογή Έκπτωσης</string>
+    <string-array name="ekptwseisList">
+        <item>Χωρίς Έκπτωση</item>
+        <item>Φοιτητικό -25%</item>
+        <item>Φοιτητικό -50%</item>
+        <item>Πολύτεκνο -25%</item>
+        <item>Στρατιωτικό -25%</item>
+    </string-array>
+    <string name="poso">Συνολικό Ποσό:</string>
+    <string name="arithmosMeEkptwsi">Αριθμός εισιτηρίων με έκπτωση:</string>
+
 </resources>
