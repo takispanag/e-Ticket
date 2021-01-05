@@ -47,8 +47,14 @@ public class PaymentActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 katigoriaEkptwsis = spinnerKatigoriaEkptwsis.getSelectedItem().toString();
-                ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(getBaseContext(),android.R.layout.simple_spinner_item, eisitiriaList);
-                spinnerAirthmosEisitiriwn.setAdapter(adapter);
+                if(!katigoriaEkptwsis.equals("Χωρίς Έκπτωση")){
+                    ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(getBaseContext(),android.R.layout.simple_spinner_item, eisitiriaList);
+                    spinnerAirthmosEisitiriwn.setAdapter(adapter);
+                }
+                else{
+                    ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(getBaseContext(),android.R.layout.simple_spinner_item, eisitiriaList.get(0));
+                    spinnerAirthmosEisitiriwn.setAdapter(adapter);
+                }
             }
 
             @Override
@@ -74,7 +80,7 @@ public class PaymentActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                //Do nothing
             }
         });
     }

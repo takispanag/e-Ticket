@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.icu.util.BuddhistCalendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,22 +19,15 @@ import android.widget.Toast;
 import android.text.format.DateFormat;
 
 import com.example.eticket.Model.Route;
-import com.example.eticket.Model.Seat;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class RouteActivity extends AppCompatActivity {
@@ -55,10 +47,6 @@ public class RouteActivity extends AppCompatActivity {
         ProgressDialog dialog = ProgressDialog.show(RouteActivity.this, "",
                 "Loading", true);
         Spinner sp1 = findViewById(R.id.spinner1);
-        List<String> li = new ArrayList<>();
-        li.add("ΑΠΟ");
-        sp1.setAdapter(fillSpinner(li));
-        li.clear();
 
         Spinner sp2 = findViewById(R.id.spinner2);
         Spinner sp3 = findViewById(R.id.spinner3);
@@ -79,11 +67,13 @@ public class RouteActivity extends AppCompatActivity {
                     sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                            ProgressDialog dialog2 = ProgressDialog.show(RouteActivity.this, "",
-                                    "Loading", true);
                             sp1Selection = sp1.getSelectedItem().toString();
-                            updateSecondSpinner(sp1Selection,sp2);
-                            dialog2.dismiss();
+                            if(!sp1Selection.equals("ΑΠΟ")){
+                                ProgressDialog dialog1 = ProgressDialog.show(RouteActivity.this, "",
+                                        "Loading", true);
+                                updateSecondSpinner(sp1Selection,sp2);
+                                dialog1.dismiss();
+                            }
                         }
 
                         @Override
@@ -91,15 +81,18 @@ public class RouteActivity extends AppCompatActivity {
                             //Do nothing
                         }
                     });
+
                     sp2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                            ProgressDialog dialog3 = ProgressDialog.show(RouteActivity.this, "",
-                                    "Loading", true);
                             sp2Selection = sp2.getSelectedItem().toString();
-                            routeKey = sp1Selection+"-"+sp2Selection;
-                            getDatabaseHours(routeKey,sp3);
-                            dialog3.dismiss();
+                            if(!sp2Selection.equals("ΠΡΟΣ")){
+                                ProgressDialog dialog2 = ProgressDialog.show(RouteActivity.this, "",
+                                        "Loading", true);
+                                routeKey = sp1Selection+"-"+sp2Selection;
+                                getDatabaseHours(routeKey,sp3);
+                                dialog2.dismiss();
+                            }
                         }
 
                         @Override
@@ -114,19 +107,30 @@ public class RouteActivity extends AppCompatActivity {
                 }
 
 
-                getCurDate();
                 search.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view) {
+                        getCurrentDate();
                         if(currentDate == ""){
                             currentDate = DateFormat.format("dd-MM-yyyy",myCalendar.getDate()).toString();
-                            Log.d("tanasis",currentDate);
                         }
-                        Intent signIn = new Intent(getBaseContext(), SeatSelectionActivity.class);
-                        Route route = new Route(currentDate,routeKey,sp3.getSelectedItem().toString());
 
-                        signIn.putExtra("route",route);
-                        startActivity(signIn);
+                        if(sp1Selection=="ΑΠΟ"){
+                            Toast.makeText(RouteActivity.this, "Παρακαλώ επιλέξτε αφετηρία.", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(sp2Selection=="ΠΡΟΣ"){
+                            Toast.makeText(RouteActivity.this, "Παρακαλώ επιλέξτε προορισμό.", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(sp3.getSelectedItem().toString()=="ΩΡΑ"){
+                            Toast.makeText(RouteActivity.this, "Παρακαλώ επιλέξτε ώρα.", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Intent signIn = new Intent(getBaseContext(), SeatSelectionActivity.class);
+                            Route route = new Route(currentDate,routeKey,sp3.getSelectedItem().toString());
+
+                            signIn.putExtra("route",route);
+                            startActivity(signIn);
+                        }
                     }
                 });
             }
@@ -148,7 +152,7 @@ public class RouteActivity extends AppCompatActivity {
     }
 
 
-    private void getCurDate(){
+    private void getCurrentDate(){
         myCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month,
@@ -176,6 +180,7 @@ public class RouteActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         List<String> list = (List<String>) document.get("ΩΡΑ");
+                        list.add(0, "ΩΡΑ");
                         sp3.setAdapter(fillSpinner(list));
                         Log.d("LogTesting", "DocumentSnapshot data: " + document.getData());
                     } else {

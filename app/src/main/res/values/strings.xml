@@ -16,6 +16,18 @@
     <string name="driver">Driver</string>
     <string name="kleiseThesi">Κλείσε Θέση</string>
     <string name="ekptwsi">Επιλογή Έκπτωσης</string>
+    <string-array name="apo">
+        <item>ΑΠΟ</item>
+    </string-array>
+    <string-array name="pros">
+        <item>ΠΡΟΣ</item>
+    </string-array>
+    <string-array name="wra">
+        <item>ΩΡΑ</item>
+    </string-array>
+    <string-array name="meEkptwsi">
+        <item>0</item>
+    </string-array>
     <string-array name="ekptwseisList">
         <item>Χωρίς Έκπτωση</item>
         <item>Φοιτητικό -25%</item>

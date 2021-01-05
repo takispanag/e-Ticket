@@ -43,7 +43,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dropdown"
+        android:entries="@array/meEkptwsi"/>
 
     <TextView
         android:id="@+id/telikoPoso"

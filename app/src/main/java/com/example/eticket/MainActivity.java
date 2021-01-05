@@ -360,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
         btnButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, RouteActivity.class));
+                startActivity(new Intent(MainActivity.this, CheckoutActivity.class));
             }
         });
 
