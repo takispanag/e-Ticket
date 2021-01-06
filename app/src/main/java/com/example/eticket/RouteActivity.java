@@ -107,11 +107,11 @@ public class RouteActivity extends AppCompatActivity {
                 }
 
 
+                getCurrentDate();
                 search.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view) {
-                        getCurrentDate();
-                        if(currentDate == ""){
+                        if(currentDate == "" || currentDate == null){
                             currentDate = DateFormat.format("dd-MM-yyyy",myCalendar.getDate()).toString();
                         }
 
@@ -216,7 +216,7 @@ public class RouteActivity extends AppCompatActivity {
     private ArrayAdapter<String> fillSpinner(List<String> mList) {
             String[] cities = new String[mList.size()];
             mList.toArray(cities);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_item, cities);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, cities);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             return adapter;
     }

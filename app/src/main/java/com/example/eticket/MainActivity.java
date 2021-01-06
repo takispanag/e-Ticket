@@ -1,34 +1,19 @@
 package com.example.eticket;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.eticket.Model.Route;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
 public class MainActivity extends AppCompatActivity {
 
-    Button btnSignIn,btnSignUp,btnButton,btnButton2;
+    Button btnSignIn, btnSignUp, btnButton, btnButton2;
     TextView txtSlogan;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         btnButton = (Button) findViewById(R.id.button);
 
         txtSlogan = (TextView) findViewById(R.id.txtSlogan);
-        Typeface face = Typeface.createFromAsset(getAssets(),"fonts/NABILA.TTF");
+        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/NABILA.TTF");
         txtSlogan.setTypeface(face);
 
 
@@ -343,24 +328,24 @@ public class MainActivity extends AppCompatActivity {
 //                    });
 //        }
 
-        btnSignUp.setOnClickListener(new View.OnClickListener(){
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, SignUpActivity.class));
             }
         });
 
-        btnSignIn.setOnClickListener(new View.OnClickListener(){
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, SignInActivity.class));
             }
         });
 
-        btnButton.setOnClickListener(new View.OnClickListener(){
+        btnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, CheckoutActivity.class));
+                startActivity(new Intent(MainActivity.this, RouteActivity.class));
             }
         });
 

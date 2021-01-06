@@ -15,8 +15,8 @@
         android:layout_gravity="center"
         android:layout_marginTop="70dp"
         android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        android:entries="@array/apo"/>
+        android:entries="@array/apo"
+        android:spinnerMode="dropdown" />
 
     <Spinner
         android:id="@+id/spinner2"
@@ -24,8 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        android:entries="@array/pros"/>
+        android:entries="@array/pros"
+        android:spinnerMode="dropdown" />
 
     <CalendarView
         android:id="@+id/calendarView"
@@ -39,8 +39,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        android:entries="@array/wra"/>
+        android:entries="@array/wra"
+        android:spinnerMode="dropdown" />
 
     <info.hoang8f.widget.FButton
         android:id="@+id/search"

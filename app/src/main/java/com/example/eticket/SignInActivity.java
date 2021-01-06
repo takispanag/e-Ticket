@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.EditText;
 import android.widget.Button;
@@ -21,7 +19,6 @@ import com.google.android.gms.tasks.Task;
 public class SignInActivity extends AppCompatActivity {
 
     private EditText emailTextView, passwordTextView;
-    private Button Btn;
 
     private FirebaseAuth mAuth;
     @Override
@@ -29,13 +26,14 @@ public class SignInActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
         // taking instance of FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
 
         // initialising all views through id defined above
         emailTextView = findViewById(R.id.email);
         passwordTextView = findViewById(R.id.password);
-        Btn = findViewById(R.id.login);
+        Button Btn = findViewById(R.id.login);
 
         // Set on Click Listener on Sign-in button
         Btn.setOnClickListener(new View.OnClickListener() {

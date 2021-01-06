@@ -36,6 +36,7 @@
         <item>Στρατιωτικό -25%</item>
     </string-array>
     <string name="poso">Συνολικό Ποσό:</string>
+    <string name="pay">Pay</string>
     <string name="arithmosMeEkptwsi">Αριθμός εισιτηρίων με έκπτωση:</string>
 
 </resources>

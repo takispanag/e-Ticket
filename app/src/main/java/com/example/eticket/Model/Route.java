@@ -1,9 +1,6 @@
 package com.example.eticket.Model;
 
-import android.text.format.DateFormat;
-
 import java.io.Serializable;
-import java.util.Date;
 
 public class Route implements Serializable {
     private String date;
