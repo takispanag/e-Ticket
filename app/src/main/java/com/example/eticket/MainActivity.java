@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        getSupportActionBar().hide();
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
         btnSignIn = (Button) findViewById(R.id.btnSignIn);
         btnButton = (Button) findViewById(R.id.button);
@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
         btnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, RouteActivity.class));
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
             }
         });
 

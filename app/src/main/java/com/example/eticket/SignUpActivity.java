@@ -23,10 +23,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
+import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private EditText nameTextView,emailTextView, passwordTextView;
+    private EditText nameTextView,emailTextView, passwordTextView, confPasswordTextView;
     private FirebaseAuth mAuth;
     CollectionReference db = FirebaseFirestore.getInstance().collection("UserInfo");
     CollectionReference db2 = FirebaseFirestore.getInstance().collection("UserSeats");
@@ -37,6 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        getSupportActionBar().hide();
         // taking instance of FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
 
@@ -44,17 +46,33 @@ public class SignUpActivity extends AppCompatActivity {
         nameTextView = findViewById(R.id.name);
         emailTextView = findViewById(R.id.email);
         passwordTextView = findViewById(R.id.password);
-        EditText confpasswordTextView = findViewById(R.id.confPassword);
+        confPasswordTextView = findViewById(R.id.confPassword);
         Button Btn = findViewById(R.id.signUp);
 
         // Set on Click Listener on Sign-un button
         Btn.setOnClickListener(new View.OnClickListener() {
             @Override
-
             public void onClick(View v)
             {
-                signupUserAccount();
+                //regex for email
+                Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+                if(nameTextView.getText().toString().equals("")|| nameTextView.getText().toString().equals(null)){
+                    Toast.makeText(SignUpActivity.this, "Παρακαλώ πληκτρολογήστε το όνομά σας.", Toast.LENGTH_SHORT).show();
+                }
+                else if(!pattern.matcher(emailTextView.getText().toString()).find() || emailTextView.getText().toString().equals("") || emailTextView.getText().toString().equals(null)){
+                    Toast.makeText(SignUpActivity.this, "Παρακαλώ πληκτρολογήστε σωστά το email σας.", Toast.LENGTH_SHORT).show();
+                }
+                else if(passwordTextView.getText().toString().equals("") || passwordTextView.getText().toString().equals(null)){
+                    Toast.makeText(SignUpActivity.this, "Παρακαλώ πληκτρολογήστε το password σας.", Toast.LENGTH_SHORT).show();
+                }
+                else if(confPasswordTextView.getText().toString().equals("") || confPasswordTextView.getText().toString().equals(null)){
+                    Toast.makeText(SignUpActivity.this, "Παρακαλώ πληκτρολογήστε το ξανά το password σας.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    signupUserAccount();
+                }
             }
+
         });
 
     }
@@ -67,7 +85,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void signupUserAccount()
     {
-
         mAuth.createUserWithEmailAndPassword(emailTextView.getText().toString(),passwordTextView.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -76,7 +93,10 @@ public class SignUpActivity extends AppCompatActivity {
                             Executors.newSingleThreadExecutor().execute(()->{
                                 Map<String, Object> userSeats = new HashMap<>();
                                 User user = new User(nameTextView.getText().toString(),emailTextView.getText().toString(),userSeats);
+                                //create user
                                 db.document(mAuth.getUid()).set(user);
+
+                                //
                                 db2.document(mAuth.getCurrentUser().getUid()).set(new HashMap<String, Object>());
                             });
                             // Sign in success, update UI with the signed-in user's information

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="About Us" android:id="@+id/AboutUs"></item>
+    <item android:title="Enable Fingerprint" android:id="@+id/fingerprint"></item>
+    <item android:title="Κλείσε Θέση" android:id="@+id/kleise_thesi"></item>
+</menu>

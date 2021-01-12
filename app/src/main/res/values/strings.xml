@@ -38,5 +38,7 @@
     <string name="poso">Συνολικό Ποσό:</string>
     <string name="pay">Pay</string>
     <string name="arithmosMeEkptwsi">Αριθμός εισιτηρίων με έκπτωση:</string>
+    <string name="name">Όνομα:</string>
+    <string name="email">Email:</string>
 
 </resources>

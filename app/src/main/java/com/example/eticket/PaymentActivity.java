@@ -5,8 +5,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.eticket.Model.Route;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -35,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -56,8 +61,6 @@ public class PaymentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //Todo: Query ston server
-        //Todo: Epeksergasia server-side
         //Todo: dimiourgia profil activity
         //Todo: dimiourgia dio koympiwn meta to signup/signin sto main activity gia na klisei thesi i na dei tis theseis poy exei kleisei idi (profile)
         //Todo: vres design gia tin parapanw ilopoiisi
@@ -65,6 +68,8 @@ public class PaymentActivity extends AppCompatActivity {
         //Todo: multiple languages
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+
+        getSupportActionBar().hide();
 
         CardInputWidget cardInputWidget = findViewById(R.id.cardInputWidget);
         cardInputWidget.setPostalCodeEnabled(false);
@@ -102,8 +107,8 @@ public class PaymentActivity extends AppCompatActivity {
         spinnerAirthmosEisitiriwn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                arithmosEisitirwnMeEkptwsi = Integer.parseInt(spinnerAirthmosEisitiriwn.getSelectedItem().toString());
                 telikoPoso = TIMI_EISITIRIOU * eisitiria;
+                arithmosEisitirwnMeEkptwsi = Integer.parseInt(spinnerAirthmosEisitiriwn.getSelectedItem().toString());
                 if (katigoriaEkptwsis.equals("Φοιτητικό -50%")) {
                     telikoPoso = telikoPoso - arithmosEisitirwnMeEkptwsi * (TIMI_EISITIRIOU * 0.5);
                     telikoPosoTextView.setText("Συνολικό ποσό: " + telikoPoso);
@@ -113,7 +118,6 @@ public class PaymentActivity extends AppCompatActivity {
                 }
 
                 // Configure the SDK with your Stripe publishable key so it can make requests to Stripe
-
                 stripe = new Stripe(
 
                         getApplicationContext(),
@@ -121,16 +125,22 @@ public class PaymentActivity extends AppCompatActivity {
                         Objects.requireNonNull("pk_test_51I5wGLEiMZrqQBFptQbRv7Q54oNZWmdfFFSA2LsqAtck8S7lJxN3n1Ia1I8Rn75u5DYtw7djVoiyOMtt0Q4GxsHz00D2cs3u3p")
 
                 );
-
                 startCheckout();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                //Do nothing
+                telikoPoso = TIMI_EISITIRIOU * eisitiria;
+                stripe = new Stripe(
+
+                        getApplicationContext(),
+
+                        Objects.requireNonNull("pk_test_51I5wGLEiMZrqQBFptQbRv7Q54oNZWmdfFFSA2LsqAtck8S7lJxN3n1Ia1I8Rn75u5DYtw7djVoiyOMtt0Q4GxsHz00D2cs3u3p")
+
+                );
+                startCheckout();
             }
         });
-
 
     }
 
@@ -192,8 +202,16 @@ public class PaymentActivity extends AppCompatActivity {
 
                 .setMessage(message);
 
-        builder.setPositiveButton("Ok", null);
-
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // do work here
+                Intent profile = new Intent(PaymentActivity.this, ProfileActivity.class);
+                Route myRoute =  (Route) getIntent().getSerializableExtra("route");
+                profile.putExtra("route",myRoute);
+                startActivity(profile);
+            }
+        });
         builder.create().show();
 
     }
@@ -207,7 +225,6 @@ public class PaymentActivity extends AppCompatActivity {
         // Handle the result of stripe.confirmPayment
 
         stripe.onPaymentResult(requestCode, data, new PaymentActivity.PaymentResultCallback(this));
-
     }
 
     private void onPaymentSuccess(@NonNull final Response response) throws IOException {
@@ -226,7 +243,6 @@ public class PaymentActivity extends AppCompatActivity {
         );
 
         paymentIntentClientSecret = responseMap.get("clientSecret");
-
     }
 
     private static final class PayCallback implements Callback {
@@ -300,7 +316,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     }
 
-    private static final class PaymentResultCallback
+    private final class PaymentResultCallback
 
             implements ApiResultCallback<PaymentIntentResult> {
 
@@ -333,13 +349,10 @@ public class PaymentActivity extends AppCompatActivity {
 
                 // Payment completed successfully
 
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
+                Route myRoute =  (Route) getIntent().getSerializableExtra("route");
                 activity.displayAlert(
 
-                        "Payment completed",
-
-                        gson.toJson(paymentIntent)
+                        "Πληρωμή ολοκληρώθηκε!", "Η κράτηση σας για το δρομολόγιο\n" + myRoute.toString() + " δημιουργήθηκε επιτυχώς."
 
                 );
 

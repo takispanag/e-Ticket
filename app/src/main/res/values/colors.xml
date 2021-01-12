@@ -10,4 +10,5 @@
     <color name="btnSignUp">#39796b</color>
     <color name="btnSignActive">#A9d440</color>
     <color name="available">#00ff22</color>
+    <color name="action_bar">#36363b</color>
 </resources>

@@ -27,6 +27,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+        getSupportActionBar().hide();
         // taking instance of FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
 

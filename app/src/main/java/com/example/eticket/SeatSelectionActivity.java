@@ -53,7 +53,9 @@ public class SeatSelectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seat_selection);
 
+        getSupportActionBar().hide();
         route = (Route) getIntent().getSerializableExtra("route");
+        Log.d("received route: ",route.toString());
 
         Button btnSearch = (Button) findViewById(R.id.kleiseThesi);
 
@@ -90,40 +92,40 @@ public class SeatSelectionActivity extends AppCompatActivity {
                         Map<String, String> takenSeat = new HashMap<>();
                         takenSeat.put(String.valueOf(btn.getId()), mAuth.getCurrentUser().getUid());
                         dbReservedSeats.document(route.toString()).set(takenSeat, SetOptions.merge());
-                            dbUserSeats.document(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        DocumentSnapshot document = task.getResult();
-                                        if (document.exists()) {
-                                            //if first run get old reserved seats list
-                                            if (firstRun) {
-                                                oldSeatsId = (List<Integer>) document.get(route.toString());
-                                                firstRun = false;
-                                            }
-                                            //check if document has fields
-                                            Map<String, Object> map = document.getData();
-                                            if (map.size() == 0 || map.isEmpty()) {
-                                                seatsId.add(btn.getId());
-                                                userRouteTakenSeats.put(route.toString(), seatsId);
-                                                dbUserSeats.document(mAuth.getCurrentUser().getUid()).set(userRouteTakenSeats, SetOptions.merge());
-                                                Log.d("testing1", "Document is empty!");
-                                            } else {
-                                                seatsId = (List<Integer>) document.get(route.toString());
-                                                seatsId.add(btn.getId());
-                                                Log.d("testing1", Arrays.toString(seatsId.toArray()));
-                                                userRouteTakenSeats.put(route.toString(), seatsId);
-                                                dbUserSeats.document(mAuth.getCurrentUser().getUid()).set(userRouteTakenSeats, SetOptions.merge());
-                                                Log.d("testing1", "Document is not empty!");
-                                            }
+                        dbUserSeats.document(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        //if first run get old reserved seats list
+                                        if (firstRun) {
+                                            oldSeatsId = (List<Integer>) document.get(route.toString());
+                                            firstRun = false;
+                                        }
+                                        //check if document has fields or if the route exist (create it if not)
+                                        Map<String, Object> map = document.getData();
+                                        if (map.size() == 0 || map.isEmpty() || document.get(route.toString()) == null) {
+                                            seatsId.add(btn.getId());
+                                            userRouteTakenSeats.put(route.toString(), seatsId);
+                                            dbUserSeats.document(mAuth.getCurrentUser().getUid()).set(userRouteTakenSeats, SetOptions.merge());
+                                            Log.d("testing1", "Document is empty!");
                                         } else {
-                                            Log.d("LogTesting", "No such document");
+                                            seatsId = (List<Integer>) document.get(route.toString());
+                                            Log.d("testing1", Arrays.toString(seatsId.toArray()));
+                                            seatsId.add(btn.getId());
+                                            Log.d("testing1", Arrays.toString(seatsId.toArray()));
+                                            userRouteTakenSeats.put(route.toString(), seatsId);
+                                            dbUserSeats.document(mAuth.getCurrentUser().getUid()).set(userRouteTakenSeats, SetOptions.merge());
                                         }
                                     } else {
-                                        Log.d("LogTesting", "get failed with ", task.getException());
+                                        Log.d("LogTesting", "No such document");
                                     }
+                                } else {
+                                    Log.d("LogTesting", "get failed with ", task.getException());
                                 }
-                            });
+                            }
+                        });
 
                     }
                 });
@@ -176,9 +178,10 @@ public class SeatSelectionActivity extends AppCompatActivity {
                 if (userSeats.isEmpty()) {
                     Toast.makeText(SeatSelectionActivity.this, "Please select one or more seats.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent kleiseThesi = new Intent(SeatSelectionActivity.this, PaymentActivity.class);
-                    kleiseThesi.putExtra("size", userSeats.size());
-                    startActivity(kleiseThesi);
+                    Intent plirwmi = new Intent(SeatSelectionActivity.this, PaymentActivity.class);
+                    plirwmi.putExtra("size", userSeats.size());
+                    plirwmi.putExtra("route", route);
+                    startActivity(plirwmi);
                 }
             }
         });
@@ -197,8 +200,8 @@ public class SeatSelectionActivity extends AppCompatActivity {
         dbUserSeats.document(mAuth.getCurrentUser().getUid()).update(delete2);
 
         //update database with old reserved seats
-        if((oldSeatsId!=null)){
-            if(!(oldSeatsId.isEmpty())){
+        if ((oldSeatsId != null)) {
+            if (!(oldSeatsId.isEmpty())) {
                 newUpdatedList.put(route.toString(), oldSeatsId);
                 dbUserSeats.document(mAuth.getCurrentUser().getUid()).set(newUpdatedList);
             }
