@@ -16,6 +16,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.regex.Pattern;
+
 public class SignInActivity extends AppCompatActivity {
 
     private EditText emailTextView, passwordTextView;
@@ -55,53 +57,49 @@ public class SignInActivity extends AppCompatActivity {
         password = passwordTextView.getText().toString();
 
         // validations for input email and password
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(getApplicationContext(),
-                    "Please enter email!",
-                    Toast.LENGTH_LONG)
-                    .show();
-            return;
+        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        if(!pattern.matcher(emailTextView.getText().toString()).find() || emailTextView.getText().toString().equals("") || emailTextView.getText().toString().equals(null)){
+            Toast.makeText(SignInActivity.this, "Παρακαλώ πληκτρολογήστε σωστά το email σας.", Toast.LENGTH_SHORT).show();
         }
-
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(getApplicationContext(),
-                    "Please enter password!",
-                    Toast.LENGTH_LONG)
-                    .show();
-            return;
+        else if(passwordTextView.getText().toString().equals("") || passwordTextView.getText().toString().equals(null)){
+            Toast.makeText(SignInActivity.this, "Παρακαλώ πληκτρολογήστε το password σας.", Toast.LENGTH_SHORT).show();
         }
+        else if(passwordTextView.getText().toString().trim().length() < 6) {
+            Toast.makeText(SignInActivity.this, "Το μέγεθος του κωδικού πρέπει να είναι τουλάχιστον 6.", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(
+                            new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(
+                                        @NonNull Task<AuthResult> task)
+                                {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(getApplicationContext(),
+                                                "Επιτυχής σύνδεση!",
+                                                Toast.LENGTH_LONG)
+                                                .show();
 
+                                        // if sign-in is successful
+                                        // intent to home activity
+                                        Intent intent
+                                                = new Intent(SignInActivity.this,
+                                                RouteActivity.class);
+                                        startActivity(intent);
+                                    }
+
+                                    else {
+
+                                        // sign-in failed
+                                        Toast.makeText(getApplicationContext(),
+                                                "Η σύνδεση απέτυχε! Παρακαλώ εισάγεται ξανά τα στοιχεία σας.",
+                                                Toast.LENGTH_LONG)
+                                                .show();
+                                    }
+                                }
+                            });
+        }
         // signin existing user
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(
-                        new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(
-                                    @NonNull Task<AuthResult> task)
-                            {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(),
-                                            "Login successful!",
-                                            Toast.LENGTH_LONG)
-                                            .show();
-
-                                    // if sign-in is successful
-                                    // intent to home activity
-                                    Intent intent
-                                            = new Intent(SignInActivity.this,
-                                            RouteActivity.class);
-                                    startActivity(intent);
-                                }
-
-                                else {
-
-                                    // sign-in failed
-                                    Toast.makeText(getApplicationContext(),
-                                            "Login failed!",
-                                            Toast.LENGTH_LONG)
-                                            .show();
-                                }
-                            }
-                        });
     }
 }

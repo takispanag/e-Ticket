@@ -1,17 +1,17 @@
 <resources>
     <string name="app_name">eTicket</string>
-    <string name="slogan">Easiest way to book a ticket! Find all available routes and destinations.</string>
+    <string name="slogan">Ο ευκολότερος τρόπος να κλείσεις εισιτήρια!\nΒρες όλα τα διαθέσιμα δρομολόγια με ένα κλικ.</string>
     <string name="logoText">e-Ticket</string>
     <string name="registerImage">Register Image</string>
-    <string name="signUp">Sign Up</string>
-    <string name="signIn">Sign In</string>
-    <string name="nameText">Enter your Name</string>
-    <string name="emailText">Enter your Email</string>
-    <string name="passwordText">Enter your Password</string>
-    <string name="confirmPasswordText">Confirm Password</string>
+    <string name="signUp">Εγγραφή</string>
+    <string name="signIn">Σύνδεση</string>
+    <string name="nameText">Εισάγετε το Ονομά σας</string>
+    <string name="emailText">Εισάγετε το Email σας</string>
+    <string name="passwordText">Εισάγετε τον κωδικό σας</string>
+    <string name="confirmPasswordText">Επανάληψη κωδικού</string>
     <string name="ticketImage">Ticket Image</string>
-    <string name="login">Login</string>
-    <string name="credentials">Enter your Credentials</string>
+    <string name="login">Σύνδεση</string>
+    <string name="credentials">Εισάγετε τα στοιχεία σας</string>
     <string name="search">ΑΝΑΖΗΤΗΣΗ</string>
     <string name="driver">Driver</string>
     <string name="kleiseThesi">Κλείσε Θέση</string>
@@ -36,9 +36,13 @@
         <item>Στρατιωτικό -25%</item>
     </string-array>
     <string name="poso">Συνολικό Ποσό:</string>
-    <string name="pay">Pay</string>
+    <string name="pay">Πλήρωσε</string>
     <string name="arithmosMeEkptwsi">Αριθμός εισιτηρίων με έκπτωση:</string>
     <string name="name">Όνομα:</string>
     <string name="email">Email:</string>
-
+    <string name="ktel_ileias">ΚΤΕΛ ΗΛΕΙΑΣ</string>
+    <string name="dieythinsi1">Ερυθρού Σταυρού 6</string>
+    <string name="dieythinsi2">Πύργος 27131</string>
+    <string name="tilefwno">30 26210 20600</string>
+    <string name="email_ktel">ktelias@otenet.gr</string>
 </resources>

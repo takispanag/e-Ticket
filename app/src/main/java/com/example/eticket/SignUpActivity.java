@@ -68,6 +68,9 @@ public class SignUpActivity extends AppCompatActivity {
                 else if(confPasswordTextView.getText().toString().equals("") || confPasswordTextView.getText().toString().equals(null)){
                     Toast.makeText(SignUpActivity.this, "Παρακαλώ πληκτρολογήστε το ξανά το password σας.", Toast.LENGTH_SHORT).show();
                 }
+                else if(confPasswordTextView.getText().toString().equals(passwordTextView.getText().toString())){
+                    Toast.makeText(SignUpActivity.this, "Οι κωδικοί που πληκτρολογήσατε δεν είναι ίδιοι.", Toast.LENGTH_SHORT).show();
+                }
                 else{
                     signupUserAccount();
                 }

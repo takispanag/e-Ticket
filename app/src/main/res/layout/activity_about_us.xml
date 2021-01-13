@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Linear Layout with vertical orientation and other properties -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#6AD6F5"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/ktel_ileias"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/ktel_ileias"
+            android:textColor="#191919"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="19"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dieythinsi1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@android:drawable/ic_dialog_map"
+            android:drawablePadding="20dp"
+            android:gravity="center_vertical"
+            android:text="@string/dieythinsi1"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/dieythinsi2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="52dp"
+            android:text="@string/dieythinsi2"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tilefwno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@android:drawable/stat_sys_phone_call"
+            android:drawablePadding="28dp"
+            android:gravity="center_vertical"
+            android:text="@string/tilefwno"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/email_ktel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@android:drawable/ic_dialog_email"
+            android:drawablePadding="20dp"
+            android:gravity="center_vertical"
+            android:text="@string/email_ktel"
+            android:textSize="18sp" />
+
+        <org.osmdroid.views.MapView
+            android:id="@+id/mapview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp" />
+
+
+    </LinearLayout>
+</LinearLayout>
