@@ -2,43 +2,32 @@ package com.example.eticket;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.biometric.BiometricPrompt;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.eticket.Model.CustomAdapter;
-import com.example.eticket.Model.Route;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,7 +36,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -58,12 +46,9 @@ import net.glxn.qrgen.android.QRCode;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 
@@ -74,7 +59,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
     CollectionReference dbSeats = FirebaseFirestore.getInstance().collection("UserSeats");
     CollectionReference dbUserInfo = FirebaseFirestore.getInstance().collection("UserInfo");
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    List<String> userSeats = new ArrayList<>();
+    List<String> userRoutes = new ArrayList<>();
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
     StorageReference ref = storage.getReference();
@@ -89,6 +74,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);getActionBar();
         //set action bar params
+
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#36363b")));
         getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#ffffff\">" + "My Profile" + "</font>"));
 
@@ -97,7 +83,6 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
                 "Loading", true);
 
         StorageReference profile_img = ref.child(mAuth.getCurrentUser().getUid()+"/profile_picture");
-
         //get profile picture if it exists in database
         localFile = null;
         try {
@@ -148,14 +133,12 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-//                    String r = route.toString();
                     if (document.exists()) {
                         Log.d("takis", "DocumentSnapshot data: " + document.getData());
                         for ( Map.Entry<String, Object> entry : document.getData().entrySet()) {
                             String key = entry.getKey();
                             Object value = entry.getValue().toString();
-                            userSeats.add(key+", Θέση: "+value.toString());
-                            // do something with key and/or tab
+                            userRoutes.add(key+", Θέση: "+value.toString());
                         }
                     } else {
                         Log.d("theseis ", "No such document");
@@ -167,7 +150,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
                 // set up the RecyclerView
                 RecyclerView recyclerView = findViewById(R.id.recycleView);
                 recyclerView.setLayoutManager(new LinearLayoutManager(ProfileActivity.this));
-                adapter = new CustomAdapter(ProfileActivity.this, userSeats);
+                adapter = new CustomAdapter(ProfileActivity.this, userRoutes);
                 adapter.setClickListener(ProfileActivity.this);
                 recyclerView.addItemDecoration(new DividerItemDecoration(ProfileActivity.this,
                         DividerItemDecoration.VERTICAL));
@@ -264,7 +247,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the main_menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.profile_menu, menu);
         return true;
     }
 
@@ -288,4 +271,5 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
 
         return true;
     }
+
 }

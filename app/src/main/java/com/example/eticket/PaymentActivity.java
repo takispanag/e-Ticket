@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +60,7 @@ public class PaymentActivity extends AppCompatActivity {
     String katigoriaEkptwsis;
     int arithmosEisitirwnMeEkptwsi;
     double telikoPoso = 0;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +176,8 @@ public class PaymentActivity extends AppCompatActivity {
         Button payButton = findViewById(R.id.payButton);
 
         payButton.setOnClickListener((View view) -> {
+           dialog = ProgressDialog.show(PaymentActivity.this, "",
+                    "Loading", true);
 
             CardInputWidget cardInputWidget = findViewById(R.id.cardInputWidget);
 
@@ -350,6 +355,7 @@ public class PaymentActivity extends AppCompatActivity {
                 // Payment completed successfully
 
                 Route myRoute =  (Route) getIntent().getSerializableExtra("route");
+                dialog.dismiss();
                 activity.displayAlert(
 
                         "Πληρωμή ολοκληρώθηκε!", "Η κράτηση σας για το δρομολόγιο\n" + myRoute.toString() + " δημιουργήθηκε επιτυχώς."

@@ -28,6 +28,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class RouteActivity extends AppCompatActivity {
@@ -55,6 +56,8 @@ public class RouteActivity extends AppCompatActivity {
         Button search = findViewById(R.id.search);
 
         myCalendar = (CalendarView) findViewById(R.id.calendarView);
+        //disable dates before today
+        myCalendar.setMinDate(new Date().getTime());
         db.collection("Origin").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
