@@ -2,12 +2,19 @@ package com.example.eticket;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -46,10 +53,17 @@ import net.glxn.qrgen.android.QRCode;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 public class ProfileActivity extends AppCompatActivity implements CustomAdapter.ItemClickListener{
@@ -59,6 +73,10 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
     CollectionReference dbSeats = FirebaseFirestore.getInstance().collection("UserSeats");
     CollectionReference dbUserInfo = FirebaseFirestore.getInstance().collection("UserInfo");
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    List<String> myUserRoutes = new ArrayList<>();
+    List<String> simerinaRoute = new ArrayList<>();
+    Boolean first_Notification = true;
     List<String> userRoutes = new ArrayList<>();
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
@@ -77,6 +95,100 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#36363b")));
         getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#ffffff\">" + "My Profile" + "</font>"));
+
+        dbSeats.document(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        for ( String key : document.getData().keySet() ) {
+                            Log.d("lista2 klidi",key);
+                            myUserRoutes.add(key);
+                        }
+                        //notification 30 lepta prin tin anaxwrisi
+                        split("",myUserRoutes,"SimerinaDromologia");//gemizw simerina route list
+                        Log.d("Lista2 ",simerinaRoute.toString());
+
+                        //            //paradeigma
+                        //            String s = "14-01-2021 ΑΜΑΛΙΑΔΑ-ΑΚΡΑΤΑ 21:31";
+                        //
+                        //            String wra = "";
+                        //            String imerominia = "";
+                        //            String[] part = s.split(" "); //returns an array with the 3 parts
+                        //            imerominia = part[0]; // imerominia
+                        //            wra = part[2]; // ora
+
+                        //notification if 30 minutes before departure
+                        Executors.newSingleThreadExecutor().execute(() -> {
+                            while (true){
+                                for(int i = 0;i<simerinaRoute.size();i++){
+                                    List<String> dromologioMeraWra = split(simerinaRoute.get(i), Collections.emptyList(),"Dromologio");
+                                    List<String> twriniMeraWra = split("",Collections.emptyList(),"TwriniWra");
+
+
+                                    SimpleDateFormat formatWra = new SimpleDateFormat("HH:mm");
+                                    Date time_now = null;
+                                    Date wra_anaxwrisis = null;
+                                    try {
+                                        time_now = formatWra.parse(twriniMeraWra.get(1));
+                                        wra_anaxwrisis = formatWra.parse(dromologioMeraWra.get(2));
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    long diff = wra_anaxwrisis.getTime() - time_now.getTime();
+                                    int minutes = (int) TimeUnit.MILLISECONDS.toMinutes(diff);
+
+                                    if(dromologioMeraWra.get(0).equalsIgnoreCase(twriniMeraWra.get(0)) && minutes<=30 && minutes>=0 && first_Notification) {
+                                        first_Notification = false;
+                                        int NOTIFICATION_ID = 234;
+                                        NotificationManager notificationManager = (NotificationManager) getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                                        String CHANNEL_ID = "";
+                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                            CHANNEL_ID = "my_channel_01";
+                                            CharSequence name = "my_channel";
+                                            String Description = "This is my channel";
+                                            int importance = NotificationManager.IMPORTANCE_HIGH;
+                                            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+                                            mChannel.setDescription(Description);
+                                            mChannel.enableLights(true);
+                                            mChannel.setLightColor(Color.RED);
+                                            mChannel.enableVibration(true);
+                                            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                                            mChannel.setShowBadge(false);
+                                            notificationManager.createNotificationChannel(mChannel);
+                                        }
+
+                                        NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext(), CHANNEL_ID)
+                                                .setContentTitle("Υπενθύμιση!")
+                                                .setContentText("Το δρομολόγιο "+dromologioMeraWra.get(1)+" θα ξεκινήσει σε 30 λεπτά.Παρακαλώ μεταβείτε στον χώρο αναχώρησης!")
+                                                .setStyle(new NotificationCompat.BigTextStyle()
+                                                        .bigText("Το δρομολόγιο "+dromologioMeraWra.get(1)+" θα ξεκινήσει σε 30 λεπτά.Παρακαλώ μεταβείτε στον χώρο αναχώρησης!"))
+                                                .setSmallIcon(R.drawable.bus);
+
+                                        Intent resultIntent = new Intent(getBaseContext(), ProfileActivity.class);
+                                        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getBaseContext());
+                                        stackBuilder.addParentStack(MainActivity.class);
+                                        stackBuilder.addNextIntent(resultIntent);
+                                        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                                        builder.setContentIntent(resultPendingIntent);
+                                        notificationManager.notify(NOTIFICATION_ID, builder.build());
+                                    }
+                                }
+                                try {
+                                    Thread.sleep(60000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }});
+                    } else {
+                        Log.d("theseis ", "No such document");
+                    }
+                } else {
+                    Log.d("theseis ", "get failed with ", task.getException());
+                }
+            }
+        });
 
         imageView = findViewById(R.id.imageViewProfile);
         ProgressDialog dialog = ProgressDialog.show(ProfileActivity.this, "",
@@ -159,6 +271,48 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
         });
 
         imageView.setOnClickListener((View view) -> selectPhoto());
+    }
+
+
+
+    public List<String> split(String myRoute, List<String> myUserRoutes, String type){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        List<String> meraWraList = new ArrayList<>();
+        if(type.equals("Dromologio")){
+            String wra = "", imerominia = "", dromologio = "";
+            String[] part = myRoute.split(" "); //returns an array with the 3 parts
+            imerominia = part[0]; // imerominia
+            dromologio = part[1]; //dromologio
+            wra = part[2]; // ora
+            meraWraList.add(imerominia);
+            meraWraList.add(dromologio);
+            meraWraList.add(wra);
+        }
+        else if(type.equals("TwriniWra")){
+            LocalDateTime now = LocalDateTime.now();
+            String[] date = dtf.format(now).split(" ");
+            String imerominia = date[0]; //imerominia twra
+            String wra = date[1]; //wra twra
+            meraWraList.add(imerominia);
+            meraWraList.add(wra);
+        }
+        else if(type.equals("SimerinaDromologia")) {
+            for (int i = 0; i < myUserRoutes.size(); i++) {
+                String wra = "", imerominia = "", dromologio = "";
+                String myRouteLocal = myUserRoutes.get(i);
+                String[] part = myRouteLocal.split(" "); //returns an array with the 3 parts
+                imerominia = part[0]; // imerominia
+                dromologio = part[1]; //dromologio
+                wra = part[2]; // ora
+                LocalDateTime now = LocalDateTime.now();
+                String[] date = dtf.format(now).split(" ");
+                String date_now_str = date[0]; //imerominia twra
+                if (imerominia.equalsIgnoreCase(date_now_str)) {
+                    simerinaRoute.add(imerominia + " " +dromologio+" "+ wra);
+                }
+            }
+        }
+        return meraWraList;
     }
 
     //kane update tin fwtografia sto app kai upload stin vasi

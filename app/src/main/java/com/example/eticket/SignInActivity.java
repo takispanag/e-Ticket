@@ -85,7 +85,7 @@ public class SignInActivity extends AppCompatActivity {
                                         // intent to home activity
                                         Intent intent
                                                 = new Intent(SignInActivity.this,
-                                                RouteActivity.class);
+                                                ProfileActivity.class);
                                         startActivity(intent);
                                     }
 
