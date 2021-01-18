@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">eTicket</string>
+    <string name="signUp">Register</string>
+    <string name="signIn">Login</string>
+    <string name="nameText">Enter your name</string>
+    <string name="emailText">Enter your email</string>
+    <string name="passwordText">Enter your password</string>
+    <string name="confirmPasswordText">Retype your password</string>
+    <string name="ticketImage">Ticket Image</string>
+    <string name="registerImage">Register Image</string>
+    <string name="login">Login</string>
+    <string name="credentials">Enter your credentials</string>
+    <string name="search">SEARCH</string>
+    <string name="driver">Driver</string>
+    <string name="kleiseThesi">Book a seat</string>
+    <string name="ekptwsi">Choose discount</string>
+    <string name="poso">Total amount:</string>
+    <string name="pay">Pay</string>
+    <string name="arithmosMeEkptwsi">Number of tickets with discount:</string>
+    <string name="name">Name:</string>
+    <string name="email">Email:</string>
+    <string name="ktel_ileias">KTEL ILEIAS</string>
+    <string name="dieythinsi1">Erithroy Stayroy 6</string>
+    <string name="dieythinsi2">Pyrgos 27131</string>
+    <string name="tilefwno">30 26210 20600</string>
+    <string name="email_ktel">ktelias@otenet.gr</string>
+    <string name="my_Profile">My Profile</string>
+    <string name="about_us">About us</string>
+    <string name="slogan">Easiest way to book a ticket!\nFind all available routes with one click.</string>
+    <string name="logoText">e-Ticket</string>
+    <string name="authOk">Authorization OK!</string>
+    <string name="authProblem">Authorization error!</string>
+    <string name="fingerprintMessage">Press no to login using your credentials.</string>
+    <string name="fingerprintTitle">Login with fingerprint sensor?</string>
+    <string name="nai">Yes</string>
+    <string name="oxi">No</string>
+    <string name="authFailed">Authorization failed!</string>
+</resources>

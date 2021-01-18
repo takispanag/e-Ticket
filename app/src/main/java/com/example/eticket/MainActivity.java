@@ -14,11 +14,14 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +32,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.protobuf.StringValue;
+import com.skydoves.powerspinner.IconSpinnerAdapter;
+import com.skydoves.powerspinner.IconSpinnerItem;
+import com.skydoves.powerspinner.OnSpinnerItemSelectedListener;
+import com.skydoves.powerspinner.PowerSpinnerView;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,13 +48,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnSignIn, btnSignUp, btnButton;
+    //TODO na ftiaksoume ta strings sta toast/biometric klp gia metafrasi se en
+    //TODO allagi font sta agglika sto main activtty
+    Button btnSignIn, btnSignUp;
     TextView txtSlogan;
 
     @Override
@@ -55,11 +68,38 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
         btnSignIn = (Button) findViewById(R.id.btnSignIn);
-        btnButton = (Button) findViewById(R.id.button);
 
         txtSlogan = (TextView) findViewById(R.id.txtSlogan);
-//        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/Calligraphy_Pen.ttf");
-//        txtSlogan.setTypeface(face, Typeface.BOLD);
+
+        List<IconSpinnerItem> iconSpinnerItems = new ArrayList<>();
+        iconSpinnerItems.add(new IconSpinnerItem("Ελ", getDrawable(R.drawable.greek_flag)));
+        iconSpinnerItems.add(new IconSpinnerItem("En", getDrawable(R.drawable.english_flag2)));
+
+        PowerSpinnerView spinnerView = findViewById(R.id.languageSpinner);
+        IconSpinnerAdapter iconSpinnerAdapter = new IconSpinnerAdapter(spinnerView);
+        spinnerView.setSpinnerAdapter(iconSpinnerAdapter);
+        spinnerView.setItems(iconSpinnerItems);
+        //update spinner using current locale or intent data (selected other language)
+        Locale currentLocale =  getResources().getConfiguration().locale;
+        Log.d("takis",currentLocale.toString());
+        if(currentLocale.toString().startsWith("en") || (getIntent().getExtras()!=null && getIntent().getExtras().getString("glwssa").equals("en"))){
+            spinnerView.selectItemByIndex(1);
+            Typeface face = Typeface.createFromAsset(getAssets(),
+                    "fonts/NABILA.TTF");
+            txtSlogan.setTypeface(face);
+        }
+        else if (currentLocale.toString().equals("el_GR") || getIntent().getExtras()!=null && getIntent().getExtras().getString("glwssa").equals("el")){
+            spinnerView.selectItemByIndex(0);
+        }
+
+        //listener toy spinner gia allagi glwssas
+        spinnerView.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener<IconSpinnerItem>(){
+            @Override
+            public void onItemSelected(int oldIndex, @Nullable IconSpinnerItem oldIconSpinnerItem, int newIndex, IconSpinnerItem newIconSpinnerItem) {
+                updateLanguage(newIconSpinnerItem.getText().toString());
+            }
+        });
+        spinnerView.setLifecycleOwner(this);
 
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
@@ -73,9 +113,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Θέλετε να συνδεθείτε με το δακτυλικό σας αποτύπωμα;")
-                        .setMessage("Πατήστε όχι για να συνδεθείτε με τα στοιχεία σας.")
-                        .setPositiveButton("Ναι", new DialogInterface.OnClickListener() {
+                        .setTitle(R.string.fingerprintTitle)
+                        .setMessage(R.string.fingerprintMessage)
+                        .setPositiveButton(R.string.nai, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 //init bio metric
                                 Executor executor = ContextCompat.getMainExecutor(MainActivity.this);
@@ -84,14 +124,14 @@ public class MainActivity extends AppCompatActivity {
                                     public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                                         super.onAuthenticationError(errorCode, errString);
                                         //error authenticating, stop tasks that requires auth
-                                        Toast.makeText(MainActivity.this, "Πρόβλημα πιστοποίησης!: " + errString, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MainActivity.this, getString(R.string.authProblem) + "\n"+errString, Toast.LENGTH_SHORT).show();
                                     }
 
                                     @Override
                                     public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                                         super.onAuthenticationSucceeded(result);
                                         //authentication succeed, continue tasts that requires auth
-                                        Toast.makeText(MainActivity.this, "Η πιστοποίηση ολοκληρώθηκε", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MainActivity.this, getString(R.string.authOk), Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                                     }
 
@@ -116,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
                         })
 
                         // A null listener allows the button to dismiss the dialog and take no further action.
-                        .setNegativeButton("Οχι", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.oxi, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 startActivity(new Intent(MainActivity.this, SignInActivity.class));
                         }
@@ -125,13 +165,34 @@ public class MainActivity extends AppCompatActivity {
                         .show();
             }
         });
+    }
 
-        btnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+    public void updateLanguage(String spinnerSelection){
+        if(spinnerSelection.equals("En")){
+            if(getResources().getConfiguration().locale.toString().startsWith("en")){
+                return;
             }
-        });
-
+            Locale locale = new Locale("en");
+            Locale.setDefault(locale);
+            Configuration config = getBaseContext().getResources().getConfiguration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+            Intent refresh = new Intent(MainActivity.this, MainActivity.class);
+            refresh.putExtra("glwssa","en");
+            startActivity(refresh);
+        }
+        else if(spinnerSelection.equals("Ελ")){
+            if(getResources().getConfiguration().locale.toString().startsWith("el")){
+                return;
+            }
+            Locale locale = new Locale("el");
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+            Intent refresh = new Intent(MainActivity.this, MainActivity.class);
+            refresh.putExtra("glwssa","el");
+            startActivity(refresh);
+        }
     }
 }

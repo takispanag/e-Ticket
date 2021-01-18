@@ -13,7 +13,7 @@
     <string name="login">Σύνδεση</string>
     <string name="credentials">Εισάγετε τα στοιχεία σας</string>
     <string name="search">ΑΝΑΖΗΤΗΣΗ</string>
-    <string name="driver">Driver</string>
+    <string name="driver">Οδηγός</string>
     <string name="kleiseThesi">Κλείσε Θέση</string>
     <string name="ekptwsi">Επιλογή Έκπτωσης</string>
     <string-array name="apo">
@@ -35,6 +35,10 @@
         <item>Πολύτεκνο -25%</item>
         <item>Στρατιωτικό -25%</item>
     </string-array>
+    <string-array name="languages">
+        <item>Ελληνικά</item>
+        <item>English</item>
+    </string-array>
     <string name="poso">Συνολικό Ποσό:</string>
     <string name="pay">Πλήρωσε</string>
     <string name="arithmosMeEkptwsi">Αριθμός εισιτηρίων με έκπτωση:</string>
@@ -47,4 +51,11 @@
     <string name="email_ktel">ktelias@otenet.gr</string>
     <string name="my_Profile">My Profile</string>
     <string name="about_us">About Us</string>
+    <string name="fingerprintTitle">Θέλετε να συνδεθείτε με το δακτυλικό σας αποτύπωμα;</string>
+    <string name="fingerprintMessage">Πατήστε όχι για να συνδεθείτε με τα στοιχεία σας.</string>
+    <string name="nai">Ναι</string>
+    <string name="oxi">Οχι</string>
+    <string name="authProblem">Πρόβλημα πιστοποίησης! </string>
+    <string name="authOk">Η πιστοποίηση ολοκληρώθηκε!</string>
+    <string name="authFailed">Η πιστοποίηση απέτυχε!</string>
 </resources>

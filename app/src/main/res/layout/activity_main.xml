@@ -7,11 +7,32 @@
     android:background="@drawable/bus"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_centerHorizontal="true"
+    <com.skydoves.powerspinner.PowerSpinnerView
+        android:id="@+id/languageSpinner"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/layout_corners_shape"
+        android:backgroundTint="#009688"
+        android:gravity="center"
+        android:padding="5dp"
+        android:textColor="@color/white"
+        android:textSize="14.5sp"
+        app:spinner_arrow_gravity="end"
+        app:spinner_divider_color="@color/black"
+        app:spinner_divider_show="true"
+        app:spinner_divider_size="0.4dp"
+        app:spinner_popup_animation="dropdown"
+        app:spinner_popup_elevation="14dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="false"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/txtLogo"
@@ -29,6 +50,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="50dp"
             android:fontFamily="@font/abril_fatface"
             android:gravity="center"
             android:text="@string/slogan"
@@ -43,12 +65,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-
         <info.hoang8f.widget.FButton
             android:id="@+id/btnSignUp"
             android:layout_width="0dp"
@@ -58,10 +74,9 @@
             android:shadowColor="@android:color/black"
             android:text="@string/signUp"
             android:textColor="@android:color/white"
-            app:cornerRadius="20dp"
+            app:cornerRadius="8dp"
             app:fButtonColor="@color/btnSignUp"
-            app:shadowEnabled="true"
-            app:shadowHeight="5dp" />
+            app:shadowEnabled="false" />
 
         <info.hoang8f.widget.FButton
             android:id="@+id/btnSignIn"
@@ -72,9 +87,9 @@
             android:shadowColor="@android:color/black"
             android:text="@string/signIn"
             android:textColor="@android:color/white"
-            app:cornerRadius="20dp"
+            app:cornerRadius="8dp"
             app:fButtonColor="@color/btnSignActive"
-            app:shadowEnabled="true"
+            app:shadowEnabled="false"
             app:shadowHeight="5dp" />
     </LinearLayout>
 
