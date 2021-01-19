@@ -68,7 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
                 else if(confPasswordTextView.getText().toString().equals("") || confPasswordTextView.getText().toString().equals(null)){
                     Toast.makeText(SignUpActivity.this, "Παρακαλώ πληκτρολογήστε το ξανά το password σας.", Toast.LENGTH_SHORT).show();
                 }
-                else if(confPasswordTextView.getText().toString().equals(passwordTextView.getText().toString())){
+                else if(!confPasswordTextView.getText().toString().equals(passwordTextView.getText().toString())){
                     Toast.makeText(SignUpActivity.this, "Οι κωδικοί που πληκτρολογήσατε δεν είναι ίδιοι.", Toast.LENGTH_SHORT).show();
                 }
                 else{
@@ -103,8 +103,8 @@ public class SignUpActivity extends AppCompatActivity {
                                 db2.document(mAuth.getCurrentUser().getUid()).set(new HashMap<String, Object>());
                             });
                             // Sign in success, update UI with the signed-in user's information
-
-                            startActivity(new Intent(getBaseContext(), RouteActivity.class));
+                            Toast.makeText(getApplicationContext(), "Η εγγραφή ολοκληρώθηκε.", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getBaseContext(), ProfileActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("signup", "createUserWithEmail:failure", task.getException());

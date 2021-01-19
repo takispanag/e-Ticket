@@ -79,6 +79,7 @@
             android:text="@string/email_ktel"
             android:textSize="18sp" />
 
+
         <org.osmdroid.views.MapView
             android:id="@+id/mapview"
             android:layout_width="match_parent"

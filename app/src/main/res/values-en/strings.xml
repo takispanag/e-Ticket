@@ -28,12 +28,15 @@
     <string name="my_Profile">My Profile</string>
     <string name="about_us">About us</string>
     <string name="slogan">Easiest way to book a ticket!\nFind all available routes with one click.</string>
-    <string name="logoText">e-Ticket</string>
+    <string name="logoText">KTEL e-LIAS</string>
     <string name="authOk">Authorization OK!</string>
     <string name="authProblem">Authorization error!</string>
     <string name="fingerprintMessage">Press no to login using your credentials.</string>
-    <string name="fingerprintTitle">Login with fingerprint sensor?</string>
+    <string name="fingerprintTitle">Login with your fingerprint?</string>
     <string name="nai">Yes</string>
     <string name="oxi">No</string>
     <string name="authFailed">Authorization failed!</string>
+    <string name="biometricAuth">Biometric Authentication</string>
+    <string name="biometricNo">App Code</string>
+    <string name="biometricTitle">Login using your fingerprint</string>
 </resources>

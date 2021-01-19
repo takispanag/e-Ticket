@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">eTicket</string>
     <string name="slogan">Ο ευκολότερος τρόπος να κλείσεις εισιτήρια!\nΒρες όλα τα διαθέσιμα δρομολόγια με ένα κλικ.</string>
-    <string name="logoText">e-Ticket</string>
+    <string name="logoText">ΚΤΕΛ e-ΛΕΙΑΣ</string>
     <string name="registerImage">Register Image</string>
     <string name="signUp">Εγγραφή</string>
     <string name="signIn">Σύνδεση</string>
@@ -55,7 +55,10 @@
     <string name="fingerprintMessage">Πατήστε όχι για να συνδεθείτε με τα στοιχεία σας.</string>
     <string name="nai">Ναι</string>
     <string name="oxi">Οχι</string>
-    <string name="authProblem">Πρόβλημα πιστοποίησης! </string>
+    <string name="authProblem">Πρόβλημα πιστοποίησης!</string>
     <string name="authOk">Η πιστοποίηση ολοκληρώθηκε!</string>
     <string name="authFailed">Η πιστοποίηση απέτυχε!</string>
+    <string name="biometricAuth">Βιομετρική Αυθεντικοποίηση</string>
+    <string name="biometricTitle">Συνδεθείτε χρησιμοποιώντας το δακτυλικό σας αποτύπωμα</string>
+    <string name="biometricNo">Κωδικός Εφαρμογής</string>
 </resources>

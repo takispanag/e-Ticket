@@ -64,6 +64,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class ProfileActivity extends AppCompatActivity implements CustomAdapter.ItemClickListener{
@@ -108,7 +110,6 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
                         }
                         //notification 30 lepta prin tin anaxwrisi
                         split("",myUserRoutes,"SimerinaDromologia");//gemizw simerina route list
-                        Log.d("Lista2 ",simerinaRoute.toString());
 
                         //            //paradeigma
                         //            String s = "14-01-2021 ΑΜΑΛΙΑΔΑ-ΑΚΡΑΤΑ 21:31";
@@ -140,6 +141,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
                                     int minutes = (int) TimeUnit.MILLISECONDS.toMinutes(diff);
 
                                     if(dromologioMeraWra.get(0).equalsIgnoreCase(twriniMeraWra.get(0)) && minutes<=30 && minutes>=0 && first_Notification) {
+                                        Log.d("pipis","mpika");
                                         first_Notification = false;
                                         int NOTIFICATION_ID = 234;
                                         NotificationManager notificationManager = (NotificationManager) getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -161,9 +163,9 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
 
                                         NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext(), CHANNEL_ID)
                                                 .setContentTitle("Υπενθύμιση!")
-                                                .setContentText("Το δρομολόγιο "+dromologioMeraWra.get(1)+" θα ξεκινήσει σε 30 λεπτά.Παρακαλώ μεταβείτε στον χώρο αναχώρησης!")
+                                                .setContentText("Το δρομολόγιο "+dromologioMeraWra.get(1)+" θα ξεκινήσει σε "+minutes+" λεπτά. Παρακαλώ μεταβείτε στον χώρο αναχώρησης!")
                                                 .setStyle(new NotificationCompat.BigTextStyle()
-                                                        .bigText("Το δρομολόγιο "+dromologioMeraWra.get(1)+" θα ξεκινήσει σε 30 λεπτά.Παρακαλώ μεταβείτε στον χώρο αναχώρησης!"))
+                                                        .bigText("Το δρομολόγιο "+dromologioMeraWra.get(1)+" θα ξεκινήσει σε "+minutes+" λεπτά. Παρακαλώ μεταβείτε στον χώρο αναχώρησης!"))
                                                 .setSmallIcon(R.drawable.bus);
 
                                         Intent resultIntent = new Intent(getBaseContext(), ProfileActivity.class);
@@ -252,6 +254,10 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
                             Object value = entry.getValue().toString();
                             userRoutes.add(key+", Θέση: "+value.toString());
                         }
+                        if(userRoutes.size()==0){
+                            userRoutes.add("Δεν έχετε κλείσει κάποιο δρομολόγιο.");
+                        }
+                        Collections.sort(userRoutes);
                     } else {
                         Log.d("theseis ", "No such document");
                     }
@@ -280,10 +286,12 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
         List<String> meraWraList = new ArrayList<>();
         if(type.equals("Dromologio")){
             String wra = "", imerominia = "", dromologio = "";
-            String[] part = myRoute.split(" "); //returns an array with the 3 parts
-            imerominia = part[0]; // imerominia
-            dromologio = part[1]; //dromologio
-            wra = part[2]; // ora
+            Matcher matcher = Pattern.compile("(\\d{2}-\\d{2}-\\d{4}) ([Α-Ω]+ ?[Α-Ω]+-[Α-Ω]+ ?[Α-Ω]+ )?(\\d{2}:\\d{2})").matcher(myRoute);
+            if(matcher.matches()){
+                imerominia = matcher.group(1); // imerominia
+                dromologio = matcher.group(2); //dromologio
+                wra = matcher.group(3); // ora
+            }
             meraWraList.add(imerominia);
             meraWraList.add(dromologio);
             meraWraList.add(wra);
@@ -300,10 +308,12 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
             for (int i = 0; i < myUserRoutes.size(); i++) {
                 String wra = "", imerominia = "", dromologio = "";
                 String myRouteLocal = myUserRoutes.get(i);
-                String[] part = myRouteLocal.split(" "); //returns an array with the 3 parts
-                imerominia = part[0]; // imerominia
-                dromologio = part[1]; //dromologio
-                wra = part[2]; // ora
+                Matcher matcher = Pattern.compile("(\\d{2}-\\d{2}-\\d{4}) ([Α-Ω]+ ?[Α-Ω]+-[Α-Ω]+ ?[Α-Ω]+)? (\\d{2}:\\d{2})").matcher(myRouteLocal);
+                if(matcher.matches()){
+                    imerominia = matcher.group(1); // imerominia
+                    dromologio = matcher.group(2); //dromologio
+                    wra = matcher.group(3); // ora
+                }
                 LocalDateTime now = LocalDateTime.now();
                 String[] date = dtf.format(now).split(" ");
                 String date_now_str = date[0]; //imerominia twra

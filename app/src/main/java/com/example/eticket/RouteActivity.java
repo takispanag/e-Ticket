@@ -27,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -187,8 +188,16 @@ public class RouteActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         List<String> list = (List<String>) document.get("ΩΡΑ");
-                        list.add(0, "ΩΡΑ");
-                        sp3.setAdapter(fillSpinner(list));
+                        List<String> availableRoutesAfterNowTime = new ArrayList<>();
+                        availableRoutesAfterNowTime.add(0, "ΩΡΑ");
+                        for(int i=0;i<list.size();i++){
+                            if(LocalTime.now().isBefore(LocalTime.parse(list.get(i)))){
+                                availableRoutesAfterNowTime.add(list.get(i));
+                            }
+                        }
+                        Log.d("thanos",availableRoutesAfterNowTime.toString());
+
+                        sp3.setAdapter(fillSpinner(availableRoutesAfterNowTime));
                         Log.d("LogTesting", "DocumentSnapshot data: " + document.getData());
                     } else {
                         Log.d("LogTesting", "No such document");
