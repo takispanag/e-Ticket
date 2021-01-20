@@ -1,7 +1,6 @@
 package com.example.eticket;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.eticket.Model.Route;
-import com.google.android.gms.common.internal.FallbackServiceBroker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -55,7 +53,6 @@ public class SeatSelectionActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
         route = (Route) getIntent().getSerializableExtra("route");
-        Log.d("received route: ",route.toString());
 
         Button btnSearch = (Button) findViewById(R.id.kleiseThesi);
 
@@ -77,18 +74,16 @@ public class SeatSelectionActivity extends AppCompatActivity {
                 btn.setTextSize(20);
                 btn.setPadding(0, 0, 0, 25);
 
-                btn.setTextColor(Color.parseColor("#00b500")); //green
+                btn.setTextColor(getColor(R.color.seat_available)); //green
                 btn.setLayoutParams(params);
                 btn.setText(String.valueOf(counter));
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.d("route", route.toString());
-                        btn.setTextColor(Color.parseColor("#a20000"));
+                        btn.setTextColor(getColor(R.color.seat_unavailable));
                         btn.setEnabled(false);
                         userSeats.add(btn);
 
-                        Log.d("LogTesting", String.valueOf(userSeats.size()));
                         Map<String, String> takenSeat = new HashMap<>();
                         takenSeat.put(String.valueOf(btn.getId()), mAuth.getCurrentUser().getUid());
                         dbReservedSeats.document(route.toString()).set(takenSeat, SetOptions.merge());
@@ -154,7 +149,7 @@ public class SeatSelectionActivity extends AppCompatActivity {
                                     }
                                     for (Button i : btnList) {
                                         if (contestedKeys.contains(i.getId())) {
-                                            i.setTextColor(Color.parseColor("#a20000")); //red
+                                            i.setTextColor(getColor(R.color.seat_unavailable)); //red
                                             i.setEnabled(false);
                                         }
                                     }
@@ -176,7 +171,7 @@ public class SeatSelectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (userSeats.isEmpty()) {
-                    Toast.makeText(SeatSelectionActivity.this, "Please select one or more seats.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SeatSelectionActivity.this, getString(R.string.selectSeats), Toast.LENGTH_SHORT).show();
                 } else {
                     Intent plirwmi = new Intent(SeatSelectionActivity.this, PaymentActivity.class);
                     plirwmi.putExtra("size", userSeats.size());
@@ -222,7 +217,7 @@ public class SeatSelectionActivity extends AppCompatActivity {
                         }
                         for (Button i : btnList) {
                             if (keyList.contains(i.getId())) {
-                                i.setTextColor(Color.parseColor("#a20000")); //red
+                                i.setTextColor(getColor(R.color.seat_unavailable)); //red
                                 i.setEnabled(false);
                             }
                         }

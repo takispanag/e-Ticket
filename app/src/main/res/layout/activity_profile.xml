@@ -34,22 +34,67 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/name_text"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:text="@string/name"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/email_text"
+                    <TextView
+                        android:id="@+id/name_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/name"
+                        android:textStyle="bold" />
+
+                    <info.hoang8f.widget.FButton
+                        android:id="@+id/ResetPassword"
+                        android:layout_width="55dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:shadowColor="@android:color/black"
+                        android:text="@string/epanaforaKodikou"
+                        android:textColor="@android:color/white"
+                        android:textSize="8sp"
+                        app:cornerRadius="10dp"
+                        app:fButtonColor="@color/btnSignUp"
+                        app:shadowEnabled="false"
+                        app:shadowHeight="5dp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:text="@string/email"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/email_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/email"
+                        android:textStyle="bold" />
+
+                    <info.hoang8f.widget.FButton
+                        android:id="@+id/EditCredentials"
+                        android:layout_width="55dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:shadowColor="@android:color/black"
+                        android:text="@string/allagiStoixeiwn"
+                        android:textColor="@android:color/white"
+                        android:textSize="8sp"
+                        app:cornerRadius="10dp"
+                        app:fButtonColor="@color/btnSignUp"
+                        app:shadowEnabled="false"
+                        app:shadowHeight="5dp" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -60,16 +105,37 @@
             android:layout_height="match_parent"
             android:layout_margin="20dp"
             android:layout_weight="9"
-            android:background="#FFFFFF"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycleView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="25"
+                android:background="#FFFFFF"
                 android:orientation="horizontal"
                 tools:layout_editor_absoluteX="119dp"
-                tools:layout_editor_absoluteY="86dp" />
+                tools:layout_editor_absoluteY="86dp"></androidx.recyclerview.widget.RecyclerView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <info.hoang8f.widget.FButton
+                    android:id="@+id/kleise_thesi_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/kleiseThesi"
+                    android:textColor="@android:color/white"
+                    app:fButtonColor="@color/btnSignUp"
+                    app:shadowEnabled="false" />
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

@@ -12,4 +12,6 @@
     <color name="available">#00ff22</color>
     <color name="action_bar">#36363b</color>
     <color name="background_color">#6AD6F5</color>
+    <color name="seat_available">#00b500</color>
+    <color name="seat_unavailable">#a20000</color>
 </resources>

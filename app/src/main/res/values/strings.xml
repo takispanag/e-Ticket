@@ -3,8 +3,8 @@
     <string name="slogan">Ο ευκολότερος τρόπος να κλείσεις εισιτήρια!\nΒρες όλα τα διαθέσιμα δρομολόγια με ένα κλικ.</string>
     <string name="logoText">ΚΤΕΛ e-ΛΕΙΑΣ</string>
     <string name="registerImage">Register Image</string>
-    <string name="signUp">Εγγραφή</string>
-    <string name="signIn">Σύνδεση</string>
+    <string name="signUp">Εγγραφη</string>
+    <string name="signIn">Συνδεση</string>
     <string name="nameText">Εισάγετε το Ονομά σας</string>
     <string name="emailText">Εισάγετε το Email σας</string>
     <string name="passwordText">Εισάγετε τον κωδικό σας</string>
@@ -40,7 +40,7 @@
         <item>English</item>
     </string-array>
     <string name="poso">Συνολικό Ποσό:</string>
-    <string name="pay">Πλήρωσε</string>
+    <string name="pay">Πληρωσε</string>
     <string name="arithmosMeEkptwsi">Αριθμός εισιτηρίων με έκπτωση:</string>
     <string name="name">Όνομα:</string>
     <string name="email">Email:</string>
@@ -58,7 +58,40 @@
     <string name="authProblem">Πρόβλημα πιστοποίησης!</string>
     <string name="authOk">Η πιστοποίηση ολοκληρώθηκε!</string>
     <string name="authFailed">Η πιστοποίηση απέτυχε!</string>
-    <string name="biometricAuth">Βιομετρική Αυθεντικοποίηση</string>
+    <string name="biometricAuth">Βιομετρική Πιστοποιηση</string>
     <string name="biometricTitle">Συνδεθείτε χρησιμοποιώντας το δακτυλικό σας αποτύπωμα</string>
     <string name="biometricNo">Κωδικός Εφαρμογής</string>
+    <string name="dromologiaUser">TA ΔΡΟΜΟΛΟΓΙΑ MOY</string>
+    <string name="onomaUser">Παρακαλώ πληκτρολογήστε το όνομά σας.</string>
+    <string name="wrongEmailToast">Παρακαλώ πληκτρολογήστε σωστά το email σας.</string>
+    <string name="wrongPasswordToast">Παρακαλώ πληκτρολογήστε το password σας.</string>
+    <string name="confPasswordUser">Παρακαλώ πληκτρολογήστε ξανά το password σας.</string>
+    <string name="passwordsNotTheSame">Οι κωδικοί που πληκτρολογήσατε δεν είναι ίδιοι.</string>
+    <string name="epitixisEgrafi">"Η εγγραφή ολοκληρώθηκε.</string>
+    <string name="apotixiaEgrafis">Η Πιστοποιηση επέτυχε</string>
+    <string name="lathosMegethosKwdikou">Το μέγεθος του κωδικού πρέπει να είναι τουλάχιστον 6.</string>
+    <string name="epitixisSindesi">Επιτυχής σύνδεση!</string>
+    <string name="sindesiApetixe">Η σύνδεση απέτυχε! Παρακαλώ εισάγεται ξανά τα στοιχεία σας.</string>
+    <string name="epilogiAfetirias">Παρακαλώ επιλέξτε αφετηρία.</string>
+    <string name="epilogiProorismou">Παρακαλώ επιλέξτε προορισμό.</string>
+    <string name="epilogiOras">Παρακαλώ επιλέξτε ώρα.</string>
+    <string name="apo">ΑΠΟ</string>
+    <string name="pros">ΠΡΟΣ</string>
+    <string name="wra">ΩΡΑ</string>
+    <string name="ipenthimisi">Υπενθύμιση!</string>
+    <string name="toDromologio">Το δρομολόγιο </string>
+    <string name="xekinaei"> θα ξεκινήσει σε </string>
+    <string name="metavasiStoXoro"> λεπτά. Παρακαλώ μεταβείτε στον χώρο αναχώρησης!</string>
+    <string name="kanenaDromologio">Δεν έχετε κλείσει κανένα δρομολόγιο.</string>
+    <string name="selectSeats">Παρακαλώ επέλεξε μια ή περισσότερες θέσεις.</string>
+    <string name="qrCode">Το QR code του εισιτηρίου σας.</string>
+    <string name="sunolikoPoso">Συνολικό ποσό: </string>
+    <string name="oloklirosiPliromis">Πληρωμή ολοκληρώθηκε!</string>
+    <string name="kratisiDromologiou">Η κράτηση σας για το δρομολόγιο</string>
+    <string name="epitixisDimiourgia"> δημιουργήθηκε επιτυχώς.</string>
+    <string name="apotixiaPliromis">Αποτυχία πληρωμής</string>
+    <string name="allagiStoixeiwn">Αλλαγή Στοχείων</string>
+    <string name="epanaforaKodikou">Επαναφορά Κωδικού</string>
+    <string name="aposindesi">Αποσύνδεση</string>
+    <string name="resetPassword">Το email επαναφοράς κωδικού στάλθηκε επιτυχώς.</string>
 </resources>

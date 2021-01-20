@@ -64,11 +64,6 @@ public class PaymentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //Todo: dimiourgia profil activity
-        //Todo: dimiourgia dio koympiwn meta to signup/signin sto main activity gia na klisei thesi i na dei tis theseis poy exei kleisei idi (profile)
-        //Todo: vres design gia tin parapanw ilopoiisi
-        //Todo: Merge to checkout activity sto payment activity
-        //Todo: multiple languages
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
 
@@ -84,11 +79,12 @@ public class PaymentActivity extends AppCompatActivity {
         Spinner spinnerAirthmosEisitiriwn = findViewById(R.id.spinnerArithmosEisitiriwn);
 
         TextView telikoPosoTextView = (TextView) findViewById(R.id.telikoPoso);
-        telikoPosoTextView.setText("Συνολικό ποσό: " + TIMI_EISITIRIOU * eisitiria);
+        telikoPosoTextView.setText(getString(R.string.sunolikoPoso)+ "\t"+TIMI_EISITIRIOU * eisitiria);
 
         for (int i = 0; i < eisitiria; i++) {
             eisitiriaList.add(i + 1);
         }
+
         spinnerKatigoriaEkptwsis.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -114,10 +110,10 @@ public class PaymentActivity extends AppCompatActivity {
                 arithmosEisitirwnMeEkptwsi = Integer.parseInt(spinnerAirthmosEisitiriwn.getSelectedItem().toString());
                 if (katigoriaEkptwsis.equals("Φοιτητικό -50%")) {
                     telikoPoso = telikoPoso - arithmosEisitirwnMeEkptwsi * (TIMI_EISITIRIOU * 0.5);
-                    telikoPosoTextView.setText("Συνολικό ποσό: " + telikoPoso);
+                    telikoPosoTextView.setText(getString(R.string.sunolikoPoso) +"\t"+ telikoPoso);
                 } else if (katigoriaEkptwsis.equals("Φοιτητικό -25%") || katigoriaEkptwsis.equals("Πολύτεκνο -25%") || katigoriaEkptwsis.equals("Στρατιωτικό -25%")) {
                     telikoPoso = telikoPoso - arithmosEisitirwnMeEkptwsi * (TIMI_EISITIRIOU * 0.25);
-                    telikoPosoTextView.setText("Συνολικό ποσό: " + telikoPoso);
+                    telikoPosoTextView.setText(getString(R.string.sunolikoPoso) +"\t"+ telikoPoso);
                 }
 
                 // Configure the SDK with your Stripe publishable key so it can make requests to Stripe
@@ -176,7 +172,7 @@ public class PaymentActivity extends AppCompatActivity {
         Button payButton = findViewById(R.id.payButton);
 
         payButton.setOnClickListener((View view) -> {
-           dialog = ProgressDialog.show(PaymentActivity.this, "",
+            dialog = ProgressDialog.show(PaymentActivity.this, "",
                     "Loading", true);
 
             CardInputWidget cardInputWidget = findViewById(R.id.cardInputWidget);
@@ -358,7 +354,7 @@ public class PaymentActivity extends AppCompatActivity {
                 dialog.dismiss();
                 activity.displayAlert(
 
-                        "Πληρωμή ολοκληρώθηκε!", "Η κράτηση σας για το δρομολόγιο\n" + myRoute.toString() + " δημιουργήθηκε επιτυχώς."
+                        getString(R.string.oloklirosiPliromis), getString(R.string.kratisiDromologiou) +"\n" + myRoute.toString() + "\n"+getString(R.string.epitixisDimiourgia)
 
                 );
 
@@ -368,7 +364,7 @@ public class PaymentActivity extends AppCompatActivity {
 
                 activity.displayAlert(
 
-                        "Payment failed",
+                        getString(R.string.apotixiaPliromis),
 
                         Objects.requireNonNull(paymentIntent.getLastPaymentError()).getMessage()
 

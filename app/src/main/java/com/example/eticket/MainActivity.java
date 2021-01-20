@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.skydoves.powerspinner.IconSpinnerAdapter;
 import com.skydoves.powerspinner.IconSpinnerItem;
 import com.skydoves.powerspinner.OnSpinnerItemSelectedListener;
@@ -30,9 +31,6 @@ import java.util.Locale;
 import java.util.concurrent.Executor;
 
 public class MainActivity extends AppCompatActivity {
-
-    //TODO na ftiaksoume ta strings sta toast/biometric klp gia metafrasi se en
-    //TODO allagi font sta agglika sto main activity
     Button btnSignIn, btnSignUp;
     TextView txtSlogan;
 
@@ -88,57 +86,63 @@ public class MainActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AlertDialog.Builder(MainActivity.this)
-                        .setTitle(R.string.fingerprintTitle)
-                        .setMessage(R.string.fingerprintMessage)
-                        .setPositiveButton(R.string.nai, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                //init bio metric
-                                Executor executor = ContextCompat.getMainExecutor(MainActivity.this);
-                                BiometricPrompt biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
-                                    @Override
-                                    public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-                                        super.onAuthenticationError(errorCode, errString);
-                                        //error authenticating, stop tasks that requires auth
-                                        Toast.makeText(MainActivity.this, getString(R.string.authProblem) + "\n"+errString, Toast.LENGTH_SHORT).show();
-                                    }
+                //if logged in emfanise an thelei na mpei me fingerprint alliws pigene kateytheian sto sign in
+                if(FirebaseAuth.getInstance().getCurrentUser()==null){
+                    startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                }
+                else{
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle(getString(R.string.fingerprintTitle))
+                            .setMessage(getString(R.string.fingerprintMessage))
+                            .setPositiveButton(getString(R.string.nai), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //init bio metric
+                                    Executor executor = ContextCompat.getMainExecutor(MainActivity.this);
+                                    BiometricPrompt biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
+                                        @Override
+                                        public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                                            super.onAuthenticationError(errorCode, errString);
+                                            //error authenticating, stop tasks that requires auth
+                                            Toast.makeText(MainActivity.this, getString(R.string.authProblem) + "\n"+errString, Toast.LENGTH_SHORT).show();
+                                        }
 
-                                    @Override
-                                    public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-                                        super.onAuthenticationSucceeded(result);
-                                        //authentication succeed, continue tasts that requires auth
-                                        Toast.makeText(MainActivity.this, getString(R.string.authOk), Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(MainActivity.this, ProfileActivity.class));
-                                    }
+                                        @Override
+                                        public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                                            super.onAuthenticationSucceeded(result);
+                                            //authentication succeed, continue tasts that requires auth
+                                            Toast.makeText(MainActivity.this, getString(R.string.authOk), Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                                        }
 
-                                    @Override
-                                    public void onAuthenticationFailed() {
-                                        super.onAuthenticationFailed();
-                                        //failed authenticating, stop tasks that requires auth
-                                        Toast.makeText(MainActivity.this, R.string.authFailed, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                                        @Override
+                                        public void onAuthenticationFailed() {
+                                            super.onAuthenticationFailed();
+                                            //failed authenticating, stop tasks that requires auth
+                                            Toast.makeText(MainActivity.this, getString(R.string.authFailed), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
 
-                                //setup title,description on auth dialog
-                                BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                                        .setTitle(getString(R.string.biometricAuth))
-                                        .setSubtitle(getString(R.string.biometricTitle))
-                                        .setNegativeButtonText(getString(R.string.biometricNo))
-                                        .build();
+                                    //setup title,description on auth dialog
+                                    BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                                            .setTitle(getString(R.string.biometricAuth))
+                                            .setSubtitle(getString(R.string.biometricTitle))
+                                            .setNegativeButtonText(getString(R.string.biometricNo))
+                                            .build();
 
-                                //handle authBtn click, start authentication
-                                biometricPrompt.authenticate(promptInfo);
-                            }
-                        })
+                                    //handle authBtn click, start authentication
+                                    biometricPrompt.authenticate(promptInfo);
+                                }
+                            })
 
-                        // A null listener allows the button to dismiss the dialog and take no further action.
-                        .setNegativeButton(R.string.oxi, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                startActivity(new Intent(MainActivity.this, SignInActivity.class));
-                        }
-                        })
-                        .setIcon(R.drawable.ic_fingerprint)
-                        .show();
+                            // A null listener allows the button to dismiss the dialog and take no further action.
+                            .setNegativeButton(getString(R.string.oxi), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                                }
+                            })
+                            .setIcon(R.drawable.ic_fingerprint)
+                            .show();
+                }
             }
         });
     }

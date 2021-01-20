@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -31,8 +30,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.eticket.Model.CustomAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -88,6 +89,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
     private Bitmap imgBitmap;
     ImageView imageView;
     File localFile;
+    String name,email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +99,33 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#36363b")));
         getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#ffffff\">" + "My Profile" + "</font>"));
+
+        Button kleise_thesi = findViewById(R.id.kleise_thesi_profile);
+        kleise_thesi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent kleise_thesi = new Intent(ProfileActivity.this, RouteActivity.class);
+                startActivity(kleise_thesi);
+            }
+        });
+
+        //password reset button and send email
+        Button password_reset = findViewById(R.id.ResetPassword);
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        password_reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                auth.sendPasswordResetEmail(email)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(ProfileActivity.this, getString(R.string.resetPassword), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
 
         dbSeats.document(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -141,40 +170,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
                                     int minutes = (int) TimeUnit.MILLISECONDS.toMinutes(diff);
 
                                     if(dromologioMeraWra.get(0).equalsIgnoreCase(twriniMeraWra.get(0)) && minutes<=30 && minutes>=0 && first_Notification) {
-                                        Log.d("pipis","mpika");
-                                        first_Notification = false;
-                                        int NOTIFICATION_ID = 234;
-                                        NotificationManager notificationManager = (NotificationManager) getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                                        String CHANNEL_ID = "";
-                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                            CHANNEL_ID = "my_channel_01";
-                                            CharSequence name = "my_channel";
-                                            String Description = "This is my channel";
-                                            int importance = NotificationManager.IMPORTANCE_HIGH;
-                                            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
-                                            mChannel.setDescription(Description);
-                                            mChannel.enableLights(true);
-                                            mChannel.setLightColor(Color.RED);
-                                            mChannel.enableVibration(true);
-                                            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-                                            mChannel.setShowBadge(false);
-                                            notificationManager.createNotificationChannel(mChannel);
-                                        }
-
-                                        NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext(), CHANNEL_ID)
-                                                .setContentTitle("Υπενθύμιση!")
-                                                .setContentText("Το δρομολόγιο "+dromologioMeraWra.get(1)+" θα ξεκινήσει σε "+minutes+" λεπτά. Παρακαλώ μεταβείτε στον χώρο αναχώρησης!")
-                                                .setStyle(new NotificationCompat.BigTextStyle()
-                                                        .bigText("Το δρομολόγιο "+dromologioMeraWra.get(1)+" θα ξεκινήσει σε "+minutes+" λεπτά. Παρακαλώ μεταβείτε στον χώρο αναχώρησης!"))
-                                                .setSmallIcon(R.drawable.bus);
-
-                                        Intent resultIntent = new Intent(getBaseContext(), ProfileActivity.class);
-                                        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getBaseContext());
-                                        stackBuilder.addParentStack(MainActivity.class);
-                                        stackBuilder.addNextIntent(resultIntent);
-                                        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-                                        builder.setContentIntent(resultPendingIntent);
-                                        notificationManager.notify(NOTIFICATION_ID, builder.build());
+                                        sendNotification(dromologioMeraWra,minutes);
                                     }
                                 }
                                 try {
@@ -228,10 +224,12 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        TextView name = findViewById(R.id.name_text);
-                        TextView email = findViewById(R.id.email_text);
-                        name.setText("Όνομα:\n"+document.get("name"));
-                        email.setText("Email:\n"+document.get("email"));
+                        TextView name_textView = findViewById(R.id.name_text);
+                        TextView email_textView = findViewById(R.id.email_text);
+                        name = document.get("name").toString();
+                        email = document.get("email").toString();
+                        name_textView.setText("Όνομα:\n"+name);
+                        email_textView.setText("Email:\n"+email);
                     } else {
                         Log.d("theseis ", "No such document");
                     }
@@ -255,7 +253,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
                             userRoutes.add(key+", Θέση: "+value.toString());
                         }
                         if(userRoutes.size()==0){
-                            userRoutes.add("Δεν έχετε κλείσει κάποιο δρομολόγιο.");
+                            userRoutes.add(getString(R.string.kanenaDromologio));
                         }
                         Collections.sort(userRoutes);
                     } else {
@@ -275,12 +273,49 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
                 recyclerView.setAdapter(adapter);
             }
         });
-
         imageView.setOnClickListener((View view) -> selectPhoto());
     }
 
+    //notification 30 lepta prin tin anaxwrisi
+    private void sendNotification(List<String> dromologioMeraWra,int minutes) {
+        first_Notification = false;
+        int NOTIFICATION_ID = 234;
+        NotificationManager notificationManager = (NotificationManager) getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        String CHANNEL_ID = "";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            CHANNEL_ID = "my_channel_01";
+            CharSequence name = "my_channel";
+            String Description = "This is my channel";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            mChannel.setDescription(Description);
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            mChannel.setShowBadge(false);
+            notificationManager.createNotificationChannel(mChannel);
+        }
 
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext(), CHANNEL_ID)
+                .setContentTitle(getString(R.string.ipenthimisi))
+                .setContentText(getString(R.string.toDromologio) +dromologioMeraWra.get(1)+getString(R.string.xekinaei)+minutes+getString(R.string.metavasiStoXoro))
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(getString(R.string.toDromologio) +dromologioMeraWra.get(1)+getString(R.string.xekinaei)+minutes+getString(R.string.metavasiStoXoro)))
+                .setSmallIcon(R.drawable.ic_notifications)
+                .setLargeIcon( BitmapFactory.decodeResource(getBaseContext().getResources(),
+                        R.drawable.bus));
 
+        Intent resultIntent = new Intent(getBaseContext(), ProfileActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getBaseContext());
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(resultPendingIntent);
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
+
+    //epistrefei list aapo string me tin mera,dromologio,wra i gemizei ta simerina routes
     public List<String> split(String myRoute, List<String> myUserRoutes, String type){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         List<String> meraWraList = new ArrayList<>();
@@ -330,7 +365,6 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             imageUri = data.getData();
             imageView.setImageURI(imageUri);
@@ -339,7 +373,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
                 imgBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 Executors.newSingleThreadExecutor().execute(() -> {
-                    imgBitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+                    imgBitmap.compress(Bitmap.CompressFormat.JPEG, 70, bos);
                     imgByteArray = bos.toByteArray();
 
                 });
@@ -354,7 +388,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
         imageView.buildDrawingCache();
         Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
         byte[] byteData = baos.toByteArray();
 
         UploadTask uploadTask = img.putBytes(byteData);
@@ -367,6 +401,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                Toast.makeText(ProfileActivity.this, "Επιτυχής αλλαγή φωτογραφίας.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -398,7 +433,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
         image.setImageBitmap(QRCode.from(mAuth.getCurrentUser().getUid()).bitmap());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Το QR code του εισιτηρίου σας.");
+        builder.setTitle(getString(R.string.qrCode));
         builder.setView(image);
         builder.setPositiveButton("Ok", null);
         AlertDialog alertDialog = builder.create();
@@ -419,15 +454,14 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch(item.getItemId()) {
-            case R.id.AboutUs:
-                //your action
+            case R.id.aboutUs:
                 Intent about_us = new Intent(ProfileActivity.this,AboutUsActivity.class);
                 startActivity(about_us);
                 break;
-            case R.id.kleise_thesi:
-                //your action
-                Intent kleise_thesi = new Intent(ProfileActivity.this,RouteActivity.class);
-                startActivity(kleise_thesi);
+            case R.id.aposindesi:
+                Intent aposindesi = new Intent(ProfileActivity.this,MainActivity.class);
+                FirebaseAuth.getInstance().signOut();
+                startActivity(aposindesi);
                 break;
             default:
                 return super.onOptionsItemSelected(item);

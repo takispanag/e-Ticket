@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.EditText;
@@ -50,7 +49,6 @@ public class SignInActivity extends AppCompatActivity {
 
     private void loginUserAccount()
     {
-
         // Take the value of two edit texts in Strings
         String email, password;
         email = emailTextView.getText().toString();
@@ -59,13 +57,13 @@ public class SignInActivity extends AppCompatActivity {
         // validations for input email and password
         Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
         if(!pattern.matcher(emailTextView.getText().toString()).find() || emailTextView.getText().toString().equals("") || emailTextView.getText().toString().equals(null)){
-            Toast.makeText(SignInActivity.this, "Παρακαλώ πληκτρολογήστε σωστά το email σας.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignInActivity.this, getString(R.string.wrongEmailToast), Toast.LENGTH_SHORT).show();
         }
         else if(passwordTextView.getText().toString().equals("") || passwordTextView.getText().toString().equals(null)){
-            Toast.makeText(SignInActivity.this, "Παρακαλώ πληκτρολογήστε το password σας.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignInActivity.this, getString(R.string.wrongPasswordToast), Toast.LENGTH_SHORT).show();
         }
         else if(passwordTextView.getText().toString().trim().length() < 6) {
-            Toast.makeText(SignInActivity.this, "Το μέγεθος του κωδικού πρέπει να είναι τουλάχιστον 6.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignInActivity.this, getString(R.string.lathosMegethosKwdikou), Toast.LENGTH_SHORT).show();
         }
         else {
             mAuth.signInWithEmailAndPassword(email, password)
@@ -77,7 +75,7 @@ public class SignInActivity extends AppCompatActivity {
                                 {
                                     if (task.isSuccessful()) {
                                         Toast.makeText(getApplicationContext(),
-                                                "Επιτυχής σύνδεση!",
+                                                getString(R.string.epitixisSindesi),
                                                 Toast.LENGTH_LONG)
                                                 .show();
 
@@ -93,13 +91,12 @@ public class SignInActivity extends AppCompatActivity {
 
                                         // sign-in failed
                                         Toast.makeText(getApplicationContext(),
-                                                "Η σύνδεση απέτυχε! Παρακαλώ εισάγεται ξανά τα στοιχεία σας.",
+                                                getString(R.string.sindesiApetixe),
                                                 Toast.LENGTH_LONG)
                                                 .show();
                                     }
                                 }
                             });
         }
-        // signin existing user
     }
 }

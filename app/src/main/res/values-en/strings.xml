@@ -26,7 +26,7 @@
     <string name="tilefwno">30 26210 20600</string>
     <string name="email_ktel">ktelias@otenet.gr</string>
     <string name="my_Profile">My Profile</string>
-    <string name="about_us">About us</string>
+    <string name="about_us">About Us</string>
     <string name="slogan">Easiest way to book a ticket!\nFind all available routes with one click.</string>
     <string name="logoText">KTEL e-LIAS</string>
     <string name="authOk">Authorization OK!</string>
@@ -39,4 +39,53 @@
     <string name="biometricAuth">Biometric Authentication</string>
     <string name="biometricNo">App Code</string>
     <string name="biometricTitle">Login using your fingerprint</string>
+    <string name="dromologiaUser">MY ROUTES</string>
+    <string name="onomaUser">Please type your name.</string>
+    <string name="wrongEmailToast">Please type your email correctly.</string>
+    <string name="wrongPasswordToast">Please type your password.</string>
+    <string name="confPasswordUser">Please re-type your password.</string>
+    <string name="passwordsNotTheSame">Password missmatch!</string>
+    <string name="epitixisEgrafi">Registration completed.</string>
+    <string name="apotixiaEgrafis">Authorization failed</string>
+    <string name="lathosMegethosKwdikou">Password length must be at least 6 characters.</string>
+    <string name="epitixisSindesi">Login successful</string>
+    <string name="sindesiApetixe">Login failed! Please enter your credentials again.</string>
+    <string name="epilogiAfetirias">Please choose starting point.</string>
+    <string name="epilogiProorismou">Please choose destination.</string>
+    <string name="epilogiOras">Please choose time.</string>
+    <string name="apo">FROM</string>
+    <string name="pros">TO</string>
+    <string name="wra">DEPARTURE</string>
+    <string name="ipenthimisi">Reminder!</string>
+    <string name="toDromologio">"Route "</string>
+    <string name="xekinaei">"departs in "</string>
+    <string name="metavasiStoXoro"> minutes. Please go to the departure point!</string>
+    <string name="selectSeats">Please choose one or more seats.</string>
+    <string name="qrCode">Your ticket QR code.</string>
+    <string name="sunolikoPoso">Total amount:</string>
+    <string name="oloklirosiPliromis">Payment completed!</string>
+    <string name="kratisiDromologiou">Your booking for route</string>
+    <string name="epitixisDimiourgia">" was created successfully."</string>
+    <string name="apotixiaPliromis">Payment failure</string>
+    <string name="kanenaDromologio">No routes booked.</string>
+    <string-array name="apo">
+        <item>FROM</item>
+    </string-array>
+    <string-array name="pros">
+        <item>TO</item>
+    </string-array>
+    <string-array name="wra">
+        <item>DEPARTURE</item>
+    </string-array>
+    <string-array name="ekptwseisList">
+        <item>No discount</item>
+        <item>Student -25%</item>
+        <item>Student -50%</item>
+        <item>Politekno -25%</item>
+        <item>Military -25%</item>
+    </string-array>
+    <string name="allagiStoixeiwn">Edit Credentials</string>
+    <string name="epanaforaKodikou">Reset Password</string>
+    <string name="aposindesi">Logout</string>
+    <string name="resetPassword">Password reset email has been sent successfully.</string>
 </resources>

@@ -1,12 +1,10 @@
 package com.example.eticket;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,9 +24,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -39,21 +39,34 @@ public class RouteActivity extends AppCompatActivity {
     String sp2Selection;
     String routeKey;
     String currentDate;
+    int selectedDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);;
     CalendarView myCalendar;
+    SearchableSpinner sp1;
+    SearchableSpinner sp2;
+    Spinner sp3;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
 
+        List<String> pros = new ArrayList<>();
+        List<String> wra = new ArrayList<>();
+        pros.add(getString(R.string.pros));
+        wra.add(getString(R.string.wra));
         getSupportActionBar().hide();
         ProgressDialog dialog = ProgressDialog.show(RouteActivity.this, "",
                 "Loading", true);
-        Spinner sp1 = findViewById(R.id.spinner1);
+        sp1 = findViewById(R.id.spinnerApo);
+        sp1.setTitle(getString(R.string.apo));
+        sp1.setPositiveButton("OK");
 
-        Spinner sp2 = findViewById(R.id.spinner2);
-        Spinner sp3 = findViewById(R.id.spinner3);
+        sp2 = findViewById(R.id.spinnerPros);
+        sp2.setTitle(getString(R.string.pros));
+        sp2.setPositiveButton("OK");
+
+        sp3 = findViewById(R.id.spinnerWra);
         Button search = findViewById(R.id.search);
 
         myCalendar = (CalendarView) findViewById(R.id.calendarView);
@@ -64,7 +77,7 @@ public class RouteActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     List<String> list = new ArrayList<>();
-                    list.add(0, "ΑΠΟ");
+                    list.add(0, getString(R.string.apo));
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         list.add(document.getId());
                     }
@@ -74,15 +87,15 @@ public class RouteActivity extends AppCompatActivity {
                         @Override
                         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                             sp1Selection = sp1.getSelectedItem().toString();
-                            if (!sp1Selection.equals("ΑΠΟ")) {
+                            if (!sp1Selection.equals(getString(R.string.apo))) {
                                 ProgressDialog dialog1 = ProgressDialog.show(RouteActivity.this, "",
                                         "Loading", true);
                                 updateSecondSpinner(sp1Selection, sp2);
                                 dialog1.dismiss();
                             } else {
-                                List<String> pros = new ArrayList<>();
-                                pros.add("ΠΡΟΣ");
+                                //an den exw epileksei afetiria adiase ta dio spinner
                                 sp2.setAdapter(fillSpinner(pros));
+                                sp3.setAdapter(fillSpinner(wra));
                             }
                         }
 
@@ -96,12 +109,16 @@ public class RouteActivity extends AppCompatActivity {
                         @Override
                         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                             sp2Selection = sp2.getSelectedItem().toString();
-                            if (!sp2Selection.equals("ΠΡΟΣ")) {
+                            if (!sp2Selection.equals(getString(R.string.pros))) {
                                 ProgressDialog dialog2 = ProgressDialog.show(RouteActivity.this, "",
                                         "Loading", true);
                                 routeKey = sp1Selection + "-" + sp2Selection;
                                 getDatabaseHours(routeKey, sp3);
                                 dialog2.dismiss();
+                            }
+                            else{
+                                //an den dialeksw proorismo adeiase tis wres
+                                sp3.setAdapter(fillSpinner(wra));
                             }
                         }
 
@@ -116,8 +133,8 @@ public class RouteActivity extends AppCompatActivity {
                     Log.d("LogTesting", "Error getting documents: ", task.getException());
                 }
 
+                dateListener();
 
-                getCurrentDate();
                 search.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -125,12 +142,12 @@ public class RouteActivity extends AppCompatActivity {
                             currentDate = DateFormat.format("dd-MM-yyyy", myCalendar.getDate()).toString();
                         }
 
-                        if (sp1Selection == "ΑΠΟ") {
-                            Toast.makeText(RouteActivity.this, "Παρακαλώ επιλέξτε αφετηρία.", Toast.LENGTH_SHORT).show();
-                        } else if (sp2Selection == "ΠΡΟΣ") {
-                            Toast.makeText(RouteActivity.this, "Παρακαλώ επιλέξτε προορισμό.", Toast.LENGTH_SHORT).show();
-                        } else if (sp3.getSelectedItem().toString() == "ΩΡΑ") {
-                            Toast.makeText(RouteActivity.this, "Παρακαλώ επιλέξτε ώρα.", Toast.LENGTH_SHORT).show();
+                        if (sp1Selection == getString(R.string.apo)) {
+                            Toast.makeText(RouteActivity.this, getString(R.string.epilogiAfetirias), Toast.LENGTH_SHORT).show();
+                        } else if (sp2Selection == getString(R.string.pros)) {
+                            Toast.makeText(RouteActivity.this, getString(R.string.epilogiProorismou), Toast.LENGTH_SHORT).show();
+                        } else if (sp3.getSelectedItem().toString() == getString(R.string.wra)) {
+                            Toast.makeText(RouteActivity.this, getString(R.string.epilogiOras), Toast.LENGTH_SHORT).show();
                         } else {
                             Intent signIn = new Intent(getBaseContext(), SeatSelectionActivity.class);
                             Route route = new Route(currentDate, routeKey, sp3.getSelectedItem().toString());
@@ -142,24 +159,10 @@ public class RouteActivity extends AppCompatActivity {
                 });
             }
         });
-
-        //"16/4 ΑΘΗΝΑ-ΑΜΑΛΙΑΔΑ 16:30"
-
-
-//        myCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-//            @Override
-//            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-//                Calendar calendar = Calendar.getInstance();
-//                calendar.set(year, month, dayOfMonth);
-//                String date = year+"-"+month+"-"+dayOfMonth;
-//                List<String> test = new ArrayList<>();
-//                test.add(String.valueOf(date));
-//            }
-//        });
     }
 
 
-    private void getCurrentDate() {
+    private void dateListener() {
         myCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month,
@@ -174,8 +177,9 @@ public class RouteActivity extends AppCompatActivity {
                     zeroMonth = "0";
                 }
                 currentDate = zeroDay + dayOfMonth + "-" + zeroMonth + (month + 1) + "-" + year;
-
-                Log.d("tanasis", currentDate);
+                selectedDay = dayOfMonth;
+                Log.d("Testing1","mpika sto calendar");
+                getDatabaseHours(routeKey,sp3);
             }
         });
     }
@@ -189,14 +193,18 @@ public class RouteActivity extends AppCompatActivity {
                     if (document.exists()) {
                         List<String> list = (List<String>) document.get("ΩΡΑ");
                         List<String> availableRoutesAfterNowTime = new ArrayList<>();
-                        availableRoutesAfterNowTime.add(0, "ΩΡΑ");
+                        availableRoutesAfterNowTime.add(0, getString(R.string.wra));
                         for(int i=0;i<list.size();i++){
-                            if(LocalTime.now().isBefore(LocalTime.parse(list.get(i)))){
+                            int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+                            //an currentDay==selectedDay (tou picker) checkare an i twrini wra einai prin apo tis wres twn routes
+                            //an currentDay!=selectedDay den mas niazei i wra opote mpes
+                            if(currentDay==selectedDay && LocalTime.now().isBefore(LocalTime.parse(list.get(i)))){
+                                availableRoutesAfterNowTime.add(list.get(i));
+                            }
+                            else if(currentDay!=selectedDay){
                                 availableRoutesAfterNowTime.add(list.get(i));
                             }
                         }
-                        Log.d("thanos",availableRoutesAfterNowTime.toString());
-
                         sp3.setAdapter(fillSpinner(availableRoutesAfterNowTime));
                         Log.d("LogTesting", "DocumentSnapshot data: " + document.getData());
                     } else {
@@ -218,7 +226,7 @@ public class RouteActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         List<String> list = (List<String>) document.get("Destination");
-                        list.add(0, "ΠΡΟΣ");
+                        list.add(0, getString(R.string.pros));
                         sp.setAdapter(fillSpinner(list));
                         Log.d("LogTesting", "DocumentSnapshot data: " + document.getData());
                     } else {
@@ -232,9 +240,9 @@ public class RouteActivity extends AppCompatActivity {
     }
 
     private ArrayAdapter<String> fillSpinner(List<String> mList) {
-        String[] cities = new String[mList.size()];
-        mList.toArray(cities);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, cities);
+        String[] array = new String[mList.size()];
+        mList.toArray(array);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, array);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         return adapter;
     }

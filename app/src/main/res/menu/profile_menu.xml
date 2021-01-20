@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="@string/about_us" android:id="@+id/AboutUs"></item>
-    <item android:title="@string/kleiseThesi" android:id="@+id/kleise_thesi"></item>
+    <item android:title="@string/about_us" android:id="@+id/aboutUs"></item>
+    <item android:title="@string/aposindesi" android:id="@+id/aposindesi"></item>
 </menu>

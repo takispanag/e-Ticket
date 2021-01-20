@@ -16,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.AuthResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -57,19 +56,19 @@ public class SignUpActivity extends AppCompatActivity {
                 //regex for email
                 Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
                 if(nameTextView.getText().toString().equals("")|| nameTextView.getText().toString().equals(null)){
-                    Toast.makeText(SignUpActivity.this, "Παρακαλώ πληκτρολογήστε το όνομά σας.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUpActivity.this, getString(R.string.onomaUser), Toast.LENGTH_SHORT).show();
                 }
                 else if(!pattern.matcher(emailTextView.getText().toString()).find() || emailTextView.getText().toString().equals("") || emailTextView.getText().toString().equals(null)){
-                    Toast.makeText(SignUpActivity.this, "Παρακαλώ πληκτρολογήστε σωστά το email σας.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUpActivity.this, getString(R.string.wrongEmailToast), Toast.LENGTH_SHORT).show();
                 }
                 else if(passwordTextView.getText().toString().equals("") || passwordTextView.getText().toString().equals(null)){
-                    Toast.makeText(SignUpActivity.this, "Παρακαλώ πληκτρολογήστε το password σας.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUpActivity.this, getString(R.string.wrongPasswordToast), Toast.LENGTH_SHORT).show();
                 }
                 else if(confPasswordTextView.getText().toString().equals("") || confPasswordTextView.getText().toString().equals(null)){
-                    Toast.makeText(SignUpActivity.this, "Παρακαλώ πληκτρολογήστε το ξανά το password σας.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUpActivity.this, getString(R.string.confPasswordUser), Toast.LENGTH_SHORT).show();
                 }
                 else if(!confPasswordTextView.getText().toString().equals(passwordTextView.getText().toString())){
-                    Toast.makeText(SignUpActivity.this, "Οι κωδικοί που πληκτρολογήσατε δεν είναι ίδιοι.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUpActivity.this, getString(R.string.passwordsNotTheSame), Toast.LENGTH_SHORT).show();
                 }
                 else{
                     signupUserAccount();
@@ -83,7 +82,6 @@ public class SignUpActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
     }
 
     private void signupUserAccount()
@@ -99,16 +97,18 @@ public class SignUpActivity extends AppCompatActivity {
                                 //create user
                                 db.document(mAuth.getUid()).set(user);
 
-                                //
                                 db2.document(mAuth.getCurrentUser().getUid()).set(new HashMap<String, Object>());
                             });
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(getApplicationContext(), "Η εγγραφή ολοκληρώθηκε.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.epitixisEgrafi), Toast.LENGTH_SHORT).show();
+                            if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified());{
+                                FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
+                            }
                             startActivity(new Intent(getBaseContext(), ProfileActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("signup", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Authentication failed.",
+                            Toast.makeText(getApplicationContext(), getString(R.string.apotixiaEgrafis),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
