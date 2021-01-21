@@ -346,12 +346,13 @@ public class PaymentActivity extends AppCompatActivity {
 
             PaymentIntent.Status status = paymentIntent.getStatus();
 
+            dialog.dismiss();
+
             if (status == PaymentIntent.Status.Succeeded) {
 
                 // Payment completed successfully
 
                 Route myRoute =  (Route) getIntent().getSerializableExtra("route");
-                dialog.dismiss();
                 activity.displayAlert(
 
                         getString(R.string.oloklirosiPliromis), getString(R.string.kratisiDromologiou) +"\n" + myRoute.toString() + "\n"+getString(R.string.epitixisDimiourgia)
@@ -379,6 +380,7 @@ public class PaymentActivity extends AppCompatActivity {
         public void onError(@NonNull Exception e) {
 
             final PaymentActivity activity = activityRef.get();
+            dialog.dismiss();
 
             if (activity == null) {
 

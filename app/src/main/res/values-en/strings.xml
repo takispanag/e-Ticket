@@ -87,5 +87,14 @@
     <string name="allagiStoixeiwn">Edit Credentials</string>
     <string name="epanaforaKodikou">Reset Password</string>
     <string name="aposindesi">Logout</string>
-    <string name="resetPassword">Password reset email has been sent successfully.</string>
+    <string name="resetPasswordEmail">Password reset email has been sent successfully.</string>
+    <string name="resetPassword">Password Reset</string>
+    <string name="emailConfirmation">Verify Email</string>
+    <string name="emailAlreadyConfirmed">Your email is already verified.</string>
+    <string name="confirmationEmailSent">Verification email has been sent successfully.</string>
+    <string name="emailConfirmed">You verified you email successfully.</string>
+    <string name="newPassword">New password</string>
+    <string name="allagiPassword">Your password was changed successfully.</string>
+    <string name="errorAllagiPassword">Your password was not changed.</string>
+    <string name="lathosStoixeia">Wrong credentials.</string>
 </resources>

@@ -101,7 +101,7 @@ public class SignUpActivity extends AppCompatActivity {
                             });
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(getApplicationContext(), getString(R.string.epitixisEgrafi), Toast.LENGTH_SHORT).show();
-                            if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified());{
+                            if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
                                 FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
                             }
                             startActivity(new Intent(getBaseContext(), ProfileActivity.class));

@@ -4,5 +4,5 @@ KTEL e-LIAS is a university project we created for booking your bus tickets (for
 
 ### Todo
 
-- Move reset password button to signin activity and add confirm email button in it's place
-- Create Edit Credentials Activity
+- [ ] Add second notification if user not verified
+- [ ] Create Edit Credentials Activity

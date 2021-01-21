@@ -90,6 +90,8 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
     ImageView imageView;
     File localFile;
     String name,email;
+    Button confirm_email;
+    boolean flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +102,17 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#36363b")));
         getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#ffffff\">" + "My Profile" + "</font>"));
 
+        //otan patisw allagi stoixeiwn pigene sto activity editCredentials
+        Button allagi_stoixeiwn = findViewById(R.id.EditCredentials);
+        allagi_stoixeiwn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent allagi_stoixeiwn = new Intent(ProfileActivity.this, EditCredentialsActivity.class);
+                startActivity(allagi_stoixeiwn);
+            }
+        });
+
+        //otan patisw kleise thesi pigene sto activity klise thesi
         Button kleise_thesi = findViewById(R.id.kleise_thesi_profile);
         kleise_thesi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,21 +122,39 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
             }
         });
 
-        //password reset button and send email
-        Button password_reset = findViewById(R.id.ResetPassword);
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        password_reset.setOnClickListener(new View.OnClickListener() {
+        //button confirm email na svistei an einai verified
+        if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
+            Button btn =(Button)findViewById(R.id.confirm_email);
+            btn.setVisibility(View.GONE);
+        }
+        else{
+            Executors.newSingleThreadExecutor().execute(() -> {
+                while (true){
+                    if(isUserVerified()){
+                        Toast.makeText(ProfileActivity.this, getString(R.string.emailConfirmed), Toast.LENGTH_SHORT).show();
+                        //intent ston eayto moy
+                        finish();
+                        startActivity(getIntent());
+                        break;
+                    }
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
+        //otan patithei to koympi confirm email stile email confirmation
+        confirm_email = (Button) findViewById(R.id.confirm_email);
+        confirm_email.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                auth.sendPasswordResetEmail(email)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(ProfileActivity.this, getString(R.string.resetPassword), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+                //if not verified
+                FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
+                FirebaseAuth.getInstance().getCurrentUser().reload();
+                Toast.makeText(ProfileActivity.this, getString(R.string.confirmationEmailSent), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -134,7 +165,6 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         for ( String key : document.getData().keySet() ) {
-                            Log.d("lista2 klidi",key);
                             myUserRoutes.add(key);
                         }
                         //notification 30 lepta prin tin anaxwrisi
@@ -275,6 +305,17 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
         });
         imageView.setOnClickListener((View view) -> selectPhoto());
     }
+
+    private boolean isUserVerified() {
+        FirebaseAuth.getInstance().getCurrentUser().reload();
+        if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 
     //notification 30 lepta prin tin anaxwrisi
     private void sendNotification(List<String> dromologioMeraWra,int minutes) {

@@ -93,5 +93,14 @@
     <string name="allagiStoixeiwn">Αλλαγή Στοχείων</string>
     <string name="epanaforaKodikou">Επαναφορά Κωδικού</string>
     <string name="aposindesi">Αποσύνδεση</string>
-    <string name="resetPassword">Το email επαναφοράς κωδικού στάλθηκε επιτυχώς.</string>
+    <string name="resetPasswordEmail">Το email επαναφοράς κωδικού στάλθηκε επιτυχώς.</string>
+    <string name="resetPassword">Επαναφορά Κωδικού</string>
+    <string name="emailConfirmation">Επιβεβαίωση Email</string>
+    <string name="emailAlreadyConfirmed">Έχετε ήδη επιβεβαιώσει το email σας.</string>
+    <string name="confirmationEmailSent">Το email επιβεβαίωσης στάλθηκε επιτυχώς.</string>
+    <string name="emailConfirmed">Το email σας επιβεβαιώθηκε επιτυχώς.</string>
+    <string name="newPassword">Καινούριος κωδικός</string>
+    <string name="allagiPassword">Ο κωδικός σας τροποποιήθηκε επιτυχώς.</string>
+    <string name="errorAllagiPassword">Ο κωδικός δεν τροποποιήθηκε.</string>
+    <string name="lathosStoixeia">Λάθος στοιχεία.</string>
 </resources>

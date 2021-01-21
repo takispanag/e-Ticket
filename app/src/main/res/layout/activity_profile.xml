@@ -35,6 +35,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutProfile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
@@ -51,12 +52,12 @@
                         android:textStyle="bold" />
 
                     <info.hoang8f.widget.FButton
-                        android:id="@+id/ResetPassword"
+                        android:id="@+id/confirm_email"
                         android:layout_width="55dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:shadowColor="@android:color/black"
-                        android:text="@string/epanaforaKodikou"
+                        android:text="@string/emailConfirmation"
                         android:textColor="@android:color/white"
                         android:textSize="8sp"
                         app:cornerRadius="10dp"
