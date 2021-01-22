@@ -88,7 +88,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:shadowColor="@android:color/black"
-                        android:text="@string/allagiStoixeiwn"
+                        android:text="@string/allagiKodikou"
                         android:textColor="@android:color/white"
                         android:textSize="8sp"
                         app:cornerRadius="10dp"

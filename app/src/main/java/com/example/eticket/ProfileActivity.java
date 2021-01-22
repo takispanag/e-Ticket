@@ -128,13 +128,18 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
             btn.setVisibility(View.GONE);
         }
         else{
+            //stile email confirmation notification
+            if(getIntent().getExtras() == null || (getIntent().getExtras()!=null && getIntent().getExtras().getBoolean("first_Notification"))){
+                sendNotification(Collections.emptyList(),0,"ConfirmEmail");
+            }
+
             Executors.newSingleThreadExecutor().execute(() -> {
                 while (true){
                     if(isUserVerified()){
-                        Toast.makeText(ProfileActivity.this, getString(R.string.emailConfirmed), Toast.LENGTH_SHORT).show();
+                        runOnUiThread(() -> Toast.makeText(ProfileActivity.this, getString(R.string.emailConfirmed), Toast.LENGTH_SHORT).show());
                         //intent ston eayto moy
                         finish();
-                        startActivity(getIntent());
+                        startActivity(getIntent().putExtra("first_Notification",first_Notification));
                         break;
                     }
                     try {
@@ -200,7 +205,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
                                     int minutes = (int) TimeUnit.MILLISECONDS.toMinutes(diff);
 
                                     if(dromologioMeraWra.get(0).equalsIgnoreCase(twriniMeraWra.get(0)) && minutes<=30 && minutes>=0 && first_Notification) {
-                                        sendNotification(dromologioMeraWra,minutes);
+                                        sendNotification(dromologioMeraWra,minutes,"Dromologio");
                                     }
                                 }
                                 try {
@@ -317,10 +322,12 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
     }
 
 
-    //notification 30 lepta prin tin anaxwrisi
-    private void sendNotification(List<String> dromologioMeraWra,int minutes) {
+    //notification 30 lepta prin tin anaxwrisi i otan o xristis den exei kanei confirm to email tou
+    private void sendNotification(List<String> dromologioMeraWra, int minutes, String type) {
         first_Notification = false;
-        int NOTIFICATION_ID = 234;
+        int NOTIFICATION_ID = 0;
+        int NOTIFICATION_ID_ROUTE = 234;
+        int NOTIFICATION_ID_EMAIL_CONFIRM = 250;
         NotificationManager notificationManager = (NotificationManager) getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
         String CHANNEL_ID = "";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -337,17 +344,33 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
             mChannel.setShowBadge(false);
             notificationManager.createNotificationChannel(mChannel);
         }
+        NotificationCompat.Builder builder = null;
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext(), CHANNEL_ID)
-                .setContentTitle(getString(R.string.ipenthimisi))
-                .setContentText(getString(R.string.toDromologio) +dromologioMeraWra.get(1)+getString(R.string.xekinaei)+minutes+getString(R.string.metavasiStoXoro))
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(getString(R.string.toDromologio) +dromologioMeraWra.get(1)+getString(R.string.xekinaei)+minutes+getString(R.string.metavasiStoXoro)))
-                .setSmallIcon(R.drawable.ic_notifications)
-                .setLargeIcon( BitmapFactory.decodeResource(getBaseContext().getResources(),
-                        R.drawable.bus));
+        if(type.equals("Dromologio")){
+            builder = new NotificationCompat.Builder(getBaseContext(), CHANNEL_ID)
+                    .setContentTitle(getString(R.string.ipenthimisi))
+                    .setContentText(getString(R.string.toDromologio) +dromologioMeraWra.get(1)+getString(R.string.xekinaei)+minutes+getString(R.string.metavasiStoXoro))
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(getString(R.string.toDromologio) +dromologioMeraWra.get(1)+getString(R.string.xekinaei)+minutes+getString(R.string.metavasiStoXoro)))
+                    .setSmallIcon(R.drawable.ic_notifications)
+                    .setLargeIcon( BitmapFactory.decodeResource(getBaseContext().getResources(),
+                            R.drawable.bus));
+            NOTIFICATION_ID = NOTIFICATION_ID_ROUTE;
+        }
+        else if (type.equals("ConfirmEmail")){
+            builder = new NotificationCompat.Builder(getBaseContext(), CHANNEL_ID)
+                    .setContentTitle(getString(R.string.ipenthimisi))
+                    .setContentText(getString(R.string.emailDenExeiEpiveveothei))
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(getString(R.string.emailDenExeiEpiveveothei)))
+                    .setSmallIcon(R.drawable.ic_notifications)
+                    .setLargeIcon( BitmapFactory.decodeResource(getBaseContext().getResources(),
+                            R.drawable.ic_email));
+            NOTIFICATION_ID = NOTIFICATION_ID_EMAIL_CONFIRM;
+        }
 
         Intent resultIntent = new Intent(getBaseContext(), ProfileActivity.class);
+        resultIntent.putExtra("first_Notification",first_Notification);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(getBaseContext());
         stackBuilder.addParentStack(MainActivity.class);
         stackBuilder.addNextIntent(resultIntent);

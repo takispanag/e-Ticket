@@ -108,12 +108,12 @@ public class PaymentActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 telikoPoso = TIMI_EISITIRIOU * eisitiria;
                 arithmosEisitirwnMeEkptwsi = Integer.parseInt(spinnerAirthmosEisitiriwn.getSelectedItem().toString());
-                if (katigoriaEkptwsis.equals("Φοιτητικό -50%")) {
+                if (katigoriaEkptwsis.equals("Φοιτητικό -50%") || katigoriaEkptwsis.equals("Student -50%")) {
                     telikoPoso = telikoPoso - arithmosEisitirwnMeEkptwsi * (TIMI_EISITIRIOU * 0.5);
-                    telikoPosoTextView.setText(getString(R.string.sunolikoPoso) +"\t"+ telikoPoso);
-                } else if (katigoriaEkptwsis.equals("Φοιτητικό -25%") || katigoriaEkptwsis.equals("Πολύτεκνο -25%") || katigoriaEkptwsis.equals("Στρατιωτικό -25%")) {
+                    telikoPosoTextView.setText(getString(R.string.sunolikoPoso) +" "+ telikoPoso);
+                } else if (katigoriaEkptwsis.equals("Φοιτητικό -25%") || katigoriaEkptwsis.equals("Πολύτεκνο -25%") || katigoriaEkptwsis.equals("Στρατιωτικό -25%") || katigoriaEkptwsis.equals("Student -25%") || katigoriaEkptwsis.equals("Politekno -25%") || katigoriaEkptwsis.equals("Military -25%")) {
                     telikoPoso = telikoPoso - arithmosEisitirwnMeEkptwsi * (TIMI_EISITIRIOU * 0.25);
-                    telikoPosoTextView.setText(getString(R.string.sunolikoPoso) +"\t"+ telikoPoso);
+                    telikoPosoTextView.setText(getString(R.string.sunolikoPoso) +" "+ telikoPoso);
                 }
 
                 // Configure the SDK with your Stripe publishable key so it can make requests to Stripe

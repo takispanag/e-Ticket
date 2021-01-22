@@ -38,28 +38,33 @@ public class EditCredentialsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AuthCredential credential = EmailAuthProvider.getCredential(email_textView.getText().toString(), password_textView.getText().toString());
 
-                user.reauthenticate(credential)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    user.updatePassword(new_password_textView.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                Toast.makeText(EditCredentialsActivity.this, getString(R.string.allagiPassword), Toast.LENGTH_SHORT).show();
-                                                Intent profile = new Intent(EditCredentialsActivity.this,ProfileActivity.class);
-                                                startActivity(profile);
-                                            } else {
-                                                Toast.makeText(EditCredentialsActivity.this, getString(R.string.errorAllagiPassword), Toast.LENGTH_SHORT).show();
+                if(new_password_textView.getText().toString().length() < 6){
+                    Toast.makeText(EditCredentialsActivity.this, getString(R.string.lathosMegethosKwdikou), Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    user.reauthenticate(credential)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        user.updatePassword(new_password_textView.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(EditCredentialsActivity.this, getString(R.string.allagiPassword), Toast.LENGTH_SHORT).show();
+                                                    Intent profile = new Intent(EditCredentialsActivity.this,ProfileActivity.class);
+                                                    startActivity(profile);
+                                                } else {
+                                                    Toast.makeText(EditCredentialsActivity.this, getString(R.string.errorAllagiPassword), Toast.LENGTH_SHORT).show();
+                                                }
                                             }
-                                        }
-                                    });
-                                } else {
-                                    Toast.makeText(EditCredentialsActivity.this, getString(R.string.lathosStoixeia), Toast.LENGTH_SHORT).show();
+                                        });
+                                    } else {
+                                        Toast.makeText(EditCredentialsActivity.this, getString(R.string.lathosStoixeia), Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
             }
         });
     }

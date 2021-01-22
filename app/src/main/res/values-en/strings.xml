@@ -57,15 +57,15 @@
     <string name="pros">TO</string>
     <string name="wra">DEPARTURE</string>
     <string name="ipenthimisi">Reminder!</string>
-    <string name="toDromologio">"Route "</string>
-    <string name="xekinaei">"departs in "</string>
+    <string name="toDromologio">Route </string>
+    <string name="xekinaei">departs in </string>
     <string name="metavasiStoXoro"> minutes. Please go to the departure point!</string>
     <string name="selectSeats">Please choose one or more seats.</string>
     <string name="qrCode">Your ticket QR code.</string>
     <string name="sunolikoPoso">Total amount:</string>
     <string name="oloklirosiPliromis">Payment completed!</string>
     <string name="kratisiDromologiou">Your booking for route</string>
-    <string name="epitixisDimiourgia">" was created successfully."</string>
+    <string name="epitixisDimiourgia"> was created successfully.</string>
     <string name="apotixiaPliromis">Payment failure</string>
     <string name="kanenaDromologio">No routes booked.</string>
     <string-array name="apo">
@@ -84,7 +84,7 @@
         <item>Politekno -25%</item>
         <item>Military -25%</item>
     </string-array>
-    <string name="allagiStoixeiwn">Edit Credentials</string>
+    <string name="allagiKodikou">Change Password</string>
     <string name="epanaforaKodikou">Reset Password</string>
     <string name="aposindesi">Logout</string>
     <string name="resetPasswordEmail">Password reset email has been sent successfully.</string>
@@ -97,4 +97,5 @@
     <string name="allagiPassword">Your password was changed successfully.</string>
     <string name="errorAllagiPassword">Your password was not changed.</string>
     <string name="lathosStoixeia">Wrong credentials.</string>
+    <string name="emailDenExeiEpiveveothei">You haven\'t confirmed your email. Please check your email folder for confirmation.</string>
 </resources>

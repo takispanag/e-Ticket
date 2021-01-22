@@ -90,7 +90,7 @@
     <string name="kratisiDromologiou">Η κράτηση σας για το δρομολόγιο</string>
     <string name="epitixisDimiourgia"> δημιουργήθηκε επιτυχώς.</string>
     <string name="apotixiaPliromis">Αποτυχία πληρωμής</string>
-    <string name="allagiStoixeiwn">Αλλαγή Στοχείων</string>
+    <string name="allagiKodikou">Αλλαγή Κωδικού</string>
     <string name="epanaforaKodikou">Επαναφορά Κωδικού</string>
     <string name="aposindesi">Αποσύνδεση</string>
     <string name="resetPasswordEmail">Το email επαναφοράς κωδικού στάλθηκε επιτυχώς.</string>
@@ -103,4 +103,5 @@
     <string name="allagiPassword">Ο κωδικός σας τροποποιήθηκε επιτυχώς.</string>
     <string name="errorAllagiPassword">Ο κωδικός δεν τροποποιήθηκε.</string>
     <string name="lathosStoixeia">Λάθος στοιχεία.</string>
+    <string name="emailDenExeiEpiveveothei">Το email σας δεν έχει επιβεβαιωθεί. Παρακαλώ ελέγξτε τα email σας.</string>
 </resources>
