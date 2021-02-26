@@ -96,7 +96,8 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);getActionBar();
+        setContentView(R.layout.activity_profile);
+        getActionBar();
         //set action bar params
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#36363b")));
@@ -107,7 +108,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
         allagi_stoixeiwn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent allagi_stoixeiwn = new Intent(ProfileActivity.this, EditCredentialsActivity.class);
+                Intent allagi_stoixeiwn = new Intent(ProfileActivity.this, ChangePasswordActivity.class);
                 startActivity(allagi_stoixeiwn);
             }
         });
@@ -123,32 +124,39 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
         });
 
         //button confirm email na svistei an einai verified
-        if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
-            Button btn =(Button)findViewById(R.id.confirm_email);
-            btn.setVisibility(View.GONE);
-        }
-        else{
-            //stile email confirmation notification
-            if(getIntent().getExtras() == null || (getIntent().getExtras()!=null && getIntent().getExtras().getBoolean("first_Notification"))){
-                sendNotification(Collections.emptyList(),0,"ConfirmEmail");
+        try{
+            if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
+                Button btn =(Button)findViewById(R.id.confirm_email);
+                btn.setVisibility(View.GONE);
             }
-
-            Executors.newSingleThreadExecutor().execute(() -> {
-                while (true){
-                    if(isUserVerified()){
-                        runOnUiThread(() -> Toast.makeText(ProfileActivity.this, getString(R.string.emailConfirmed), Toast.LENGTH_SHORT).show());
-                        //intent ston eayto moy
-                        finish();
-                        startActivity(getIntent().putExtra("first_Notification",first_Notification));
-                        break;
-                    }
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            else{
+                //stile email confirmation notification
+                if(getIntent().getExtras() == null || (getIntent().getExtras()!=null && getIntent().getExtras().getBoolean("first_Notification"))){
+                    sendNotification(Collections.emptyList(),0,"ConfirmEmail");
                 }
-            });
+
+                Executors.newSingleThreadExecutor().execute(() -> {
+                    while (true){
+                        if(FirebaseAuth.getInstance().getCurrentUser()==null) {
+                            break;
+                        }
+                        if(isUserVerified()){
+                            runOnUiThread(() -> Toast.makeText(ProfileActivity.this, getString(R.string.emailConfirmed), Toast.LENGTH_SHORT).show());
+                            //intent ston eayto moy
+                            finish();
+                            startActivity(getIntent().putExtra("first_Notification",first_Notification));
+                            break;
+                        }
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }catch (Exception e){
+            Log.e("pipinho",e.toString());
         }
 
         //otan patithei to koympi confirm email stile email confirmation
@@ -312,11 +320,16 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
     }
 
     private boolean isUserVerified() {
-        FirebaseAuth.getInstance().getCurrentUser().reload();
-        if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
-            return true;
-        }
-        else{
+        try{
+            FirebaseAuth.getInstance().getCurrentUser().reload();
+            if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
+                return true;
+            }
+            else{
+                return false;
+            }
+        }catch(Exception e){
+            Log.e("pipinho",e.toString());
             return false;
         }
     }
@@ -494,7 +507,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomAdapter.
         }
 
         image.setLayoutParams(params);
-        image.setImageBitmap(QRCode.from(mAuth.getCurrentUser().getUid()).bitmap());
+        image.setImageBitmap(QRCode.from(userRoutes.get(position)).bitmap()); //qr eisitiriwn
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.qrCode));

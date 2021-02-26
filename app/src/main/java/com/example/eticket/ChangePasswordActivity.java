@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,12 +17,12 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class EditCredentialsActivity extends AppCompatActivity {
+public class ChangePasswordActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_credentials);
+        setContentView(R.layout.activity_change_password);
 
         getSupportActionBar().hide();
 
@@ -39,7 +38,7 @@ public class EditCredentialsActivity extends AppCompatActivity {
                 AuthCredential credential = EmailAuthProvider.getCredential(email_textView.getText().toString(), password_textView.getText().toString());
 
                 if(new_password_textView.getText().toString().length() < 6){
-                    Toast.makeText(EditCredentialsActivity.this, getString(R.string.lathosMegethosKwdikou), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChangePasswordActivity.this, getString(R.string.lathosMegethosKwdikou), Toast.LENGTH_SHORT).show();
                 }
                 else{
                     user.reauthenticate(credential)
@@ -51,16 +50,16 @@ public class EditCredentialsActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
-                                                    Toast.makeText(EditCredentialsActivity.this, getString(R.string.allagiPassword), Toast.LENGTH_SHORT).show();
-                                                    Intent profile = new Intent(EditCredentialsActivity.this,ProfileActivity.class);
+                                                    Toast.makeText(ChangePasswordActivity.this, getString(R.string.allagiPassword), Toast.LENGTH_SHORT).show();
+                                                    Intent profile = new Intent(ChangePasswordActivity.this,ProfileActivity.class);
                                                     startActivity(profile);
                                                 } else {
-                                                    Toast.makeText(EditCredentialsActivity.this, getString(R.string.errorAllagiPassword), Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(ChangePasswordActivity.this, getString(R.string.errorAllagiPassword), Toast.LENGTH_SHORT).show();
                                                 }
                                             }
                                         });
                                     } else {
-                                        Toast.makeText(EditCredentialsActivity.this, getString(R.string.lathosStoixeia), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ChangePasswordActivity.this, getString(R.string.lathosStoixeia), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });

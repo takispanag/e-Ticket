@@ -18,7 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
-        <activity android:name=".EditCredentialsActivity"></activity>
+        <activity android:name=".ChangePasswordActivity"></activity>
         <activity android:name=".ProfileActivity" />
         <activity android:name=".PaymentActivity" />
         <activity android:name=".RouteActivity" />
