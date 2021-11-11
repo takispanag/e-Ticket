@@ -1,6 +1,6 @@
 # e-Ticket
 
-KTEL e-LIAS is a university project we created for booking your bus tickets (for the time being).
+KTEL e-LIAS is a university project we created for booking your bus tickets in real-time using firebase and Stripe API.
 
 ### Todo
 
